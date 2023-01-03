@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Vaxtrac Home{% endblock %}
+
+{% block body %}
+  <h1>Create an Account</h1>
+
+  <form action="/registration" method="POST">
+    <p>
+      Email<span style="color: red">*</span>  <input type="text" name="email" placeholder="email@example.com" required pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$" required>
+    </p>
+
+    <p>
+      Name<span style="color: red">*</span>  <input type="name" name="name"placeholder="Your Name" required>
+    </p>
+
+    <p>
+        Password<span style="color: red">*</span>  <input type="password" name="password" placeholder="Password" required>
+      </p>
+
+    <p>
+      <input type="submit">
+    </p>
+  </form>
+
+ 
+{% endblock %}
