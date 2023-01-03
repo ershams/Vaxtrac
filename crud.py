@@ -59,10 +59,10 @@ def create_vaccine(Vaccine, nineteen_to_twentysix, twentyseven_to_fortynine, fif
                        sixtyfive=sixtyfive)
     return adult_vaccine
 
-def create_profile(user, name, age, vaccine_status):
+def create_profile(user, name, vaccine, vaccine_date):
     """Creates and returns new profile"""
 
-    profile = Profile(user=user, name=name, age=age, vaccine_status=vaccine_status)
+    profile = Profile(user=user, name=name, vaccine=vaccine, vaccine_date=vaccine_date)
 
     return profile
 

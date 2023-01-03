@@ -74,7 +74,22 @@ def register_user():
         db.session.commit()
         flash("Account created! Please log in.")
 
-    return render_template('registration.html', registration=False)
+    return render_template('registration.html')
+
+@app.route("/create_profile", methods=["POST"])
+def add_profile():
+    """Create and log a new profile."""
+    logged_in_email = session.get("user_email")
+
+    user = crud.get_user_by_email(logged_in_email)
+    # user=user, name=name, age=age, vaccine_status=vaccine_status)
+
+    name = request.form.get('name')
+    age = request.form.get('age')
+    vaccine = request.form.get('vaccine')
+    admin_date = request.form.get('admin_date')
+    
+
 
 if __name__ == "__main__":
     connect_to_db(app)
