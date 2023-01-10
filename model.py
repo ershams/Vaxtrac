@@ -21,6 +21,7 @@ class Profile(db.Model):
 
     profile_id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     name = db.Column(db.String, nullable = False)
+    gender = db.Column(db.String)
     age = db.Column(db.DateTime, nullable = False)
     vaccine_status = db.Column(db.Boolean)
     user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"))

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Vaxtrac{% endblock %}
+
+{% block head %} 
+
+
+{% endblock %}
+
+
+{% block body %}
+
+
+<div>
+    <h2>Vaccine Eligibility</h2>
+  
+    Are you <br>
+    
+    <input type="radio" id="maleField" name="gender" value="male" /> <label for="male">Male</label> <br>
+    <input type="radio" id="femaleField" name="gender" value="female" /> <label for="female" >Female</label><br><br>
+
+    When were you born?<br>
+    <input type="date" id="dobField" name="DOB" /> <br><br>
+
+    Are you pregnant or do you plan on becoming pregnant soon?<br>
+    
+    <input type="radio" id="pregnantYes" name="pregnant" value="pregnantYes" /> Yes</input><br>
+    <input type="radio" id="pregnantNo" name="pregnant" value="pregnantNo" /> No </input><br><br>
+
+    Are you planning to travel out of the U.S. in the near future?<br>
+    
+    <input type="radio" id="travelYes" name="travel" value="travelYes" /> Yes</input><br>
+    <input type="radio" id="traveltNo" name="travel" value="traveltNo" /> No </input><br><br>
+
+    Have you ever had the chickenpox vaccine, been diagnosed with chickenpox, or have laboratory results showing you had chickenpox?<br>
+
+    <input type="radio" id="cpYes" name="chickenpox" value="cpYes" /> Yes</input><br>
+    <input type="radio" id="cpNo" name="chickenpox" value="cpNo" /> No </input><br>
+    <input type="radio" id="cpUnsure" name="chickenpox" value="cpUnsure" /> Unsure </input><br><br>
+
+    Do you work in healthcare or public safety, and come in contact with blood or body fluids?<br>
+
+    <input type="radio" id="bloodYes" name="chickenpox" value="bloodYes" /> Yes</input><br>
+    <input type="radio" id="bloodNo" name="chickenpox" value="bloodNo" /> No </input><br><br>
+
+    Do you use insulins or other injectable medications?<br>
+
+    <input type="radio" id="injectYes" name="inject" value="injectYes" /> Yes</input><br>
+    <input type="radio" id="injectNo" name="inject" value="injectYes" /> No </input><br><br>
+
+
+    <br><button id="submitQuiz" type = "submit">Submit Quiz</button>
+
+    </div>
+
+    {% endblock %}

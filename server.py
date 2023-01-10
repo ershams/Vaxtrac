@@ -17,23 +17,23 @@ def homepage():
 
     return render_template("homepage.html")
 
-@app.route("/login", methods=["GET", "POST"])
+@app.route("/login", methods=["POST"])
 def process_login():
     """Process user login."""
 
-    if request.method == 'POST':
-        email = request.form.get("email")
-        password = request.form.get("password")
+    # if request.method == 'POST':
+    email = request.form.get("email")
+    password = request.form.get("password")
 
-        user = crud.get_user_by_email(email)
-        if not user or user.password != password:
+    user = crud.get_user_by_email(email)
+    if not user or user.password != password:
             flash("The email or password you entered was incorrect.")
-        else:
+    else:
             # Log in user by storing the user's email in session
             session["user_email"] = user.email
             flash(f"Welcome back, {user.email}!")
 
-        return redirect("/dashboard")
+    return redirect("/dashboard")
 
 @app.route("/logout")
 def process_logout():
@@ -46,15 +46,24 @@ def process_logout():
 def show_dashboard():
     """Show user dashboard"""
     
-    logged_in_email = session.get("user_email")
-    user = crud.get_user_by_email(logged_in_email)
+    if 'user_email' in session:
+        print('!!!!')
 
-    return render_template("dashboard.html")
+        logged_in_email = session.get("user_email")
+        user = crud.get_user_by_email(logged_in_email)
+
+        return render_template("dashboard.html", profiles = user.profiles)
+    return redirect ('/')
 
 @app.route("/sign-up")
 def show_sign_up_form():
     """take use to sign-up form"""
     return render_template("registration.html")
+
+@app.route("/quiz")
+def show_quiz():
+    """take use to sign-up form"""
+    return render_template("quiz.html")
 
 @app.route("/registration", methods=["POST"])
 def register_user():
@@ -80,14 +89,22 @@ def register_user():
 def add_profile():
     """Create and log a new profile."""
     logged_in_email = session.get("user_email")
+    if logged_in_email:
 
-    user = crud.get_user_by_email(logged_in_email)
-    # user=user, name=name, age=age, vaccine_status=vaccine_status)
+        user = crud.get_user_by_email(logged_in_email)
+        # user=user, name=name, age=age, vaccine_status=vaccine_status)
 
-    name = request.form.get('name')
-    age = request.form.get('age')
-    vaccine = request.form.get('vaccine')
-    admin_date = request.form.get('admin_date')
+        name = request.form.get('nameField')
+        print(type(name))
+        age = request.form.get('dobField')
+        # vaccine = request.form.get('vaccine')
+        gender = request.form.getlist('gender')
+
+        profile = crud.create_profile(user, name, age)
+        db.session.add(profile)
+        db.session.commit()
+
+    return redirect("/dashboard")
     
 
 

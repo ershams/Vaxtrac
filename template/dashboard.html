@@ -11,14 +11,107 @@
 {% block body %}
 
 
+<form action="/create_profile" method = "POST">
+    <h2>Create New Profile</h2>
+  
+    Name <input type="text" id="nameField" name="nameField" /> <br>Gender
+    <input type="radio" id="maleField" name="gender" value="male" /> <label for="male">Male</label>
+    <input type="radio" id="femaleField" name="gender" value="female" /> <label for="female" >Female</label>
+    <input type="date" id="dobField" name="dobField" /> 
+    <br><button id="addProfile" type = "submit">Add Profile</button>
+  
+    <h2>Profiles</h2>
+</form>
+  
+  <div id="container" class="grid"></div>
+  {% endblock %} {% block js %}
+  <script>
+    function getProfileData() {
+      // Get the up to date card data from DB.
+  
+      fetch("/profiles.json")
+        .then((response) => response.json())
+        .then((data) => insertCardData(data));
+    }
+  
+    const createProfileAndAddToContainer = (name, skill) => {
+      const profileElement = document.createElement("div");
+      profileElement.classList.add("card");
+      profileElement.innerHTML = `
+          <p>Name: ${name}</p>
+          <p>Skill: ${skill} </p>
+      `;
+      document.querySelector("#container").append(cardElement);
+    };
+  
+    const insertProfileData = (response) => {
+      // Once the data has been provided by the server,
+      // insert it into the page as an HTML string.
+      const listOfProfiles = response.cards;
+  
+      const container = document.querySelector("#container");
+  
+      // empty the container so it has no content
+      container.innerHTML = "";
+  
+      for (const currentProfile of listOfProfiles)
+        createProfileAndAddToContainer(
+          currentProfile.name,
+          currentProfile.skill,
+        );
+      }
+    const addNewProfile = (evt) => {
+      // Respond to the Add New Card form getting submitted.
+      // This is an event handling function.
+  
+      // Get name that user typed in Name field.
+      const name = document.querySelector("#nameField").value;
+  
+      const skill = document.querySelector("#skillField").value;
+  
+      // Make a request to the server to add the card
+      // the server sends us a response with the new card
+      // We then add this card to the page
+      fetch("/add-profile", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, skill }),
+      })
+        .then((response) => response.json())
+        .then((jsonResponse) => {
+          const name = jsonResponse.profileAdded.name;
+          const gender = jsonResponse.profileAdded.gender;
+          createCardAndAddToContainer(name, skill, imgUrl);
+        });
+    };
+  
+    // Attach the addNewCard function to the 'Add' button click.
+    document.querySelector("#addProfile").addEventListener("click", addNewProfile);
+  
+    // Get intial cards when page initially loads!
+    getCardData();
+  </script>
+  {% endblock %}
+  
+
+<!-- <div>
+    <h2>Create a New Profile</h2>
+
+    Name <input type = "text" id = "nameField" />
+    Gender <input type = "text" id ="genderField" /> -->
+    <!-- add datepicker for age -->
+<!-- </div>
+
+
   <p>
     <form action = "/go-to-profile">
-        <button type="submit">Add A New Profile</button>
+        <button type="submit">Create Profile</button>
     </form>
   </p>
   <br>
   <p>
     <form action = "/find_vaccines">
         <button type="submit">Find which Vaccines you're eligible for</button>
-    </form>
-  {% endblock %}
+    </form> -->
