@@ -17,12 +17,22 @@
     Name <input type="text" id="nameField" name="nameField" /> <br>Gender
     <input type="radio" id="maleField" name="gender" value="male" /> <label for="male">Male</label>
     <input type="radio" id="femaleField" name="gender" value="female" /> <label for="female" >Female</label>
-    <input type="date" id="dobField" name="dobField" /> 
-    <br><button id="addProfile" type = "submit">Add Profile</button>
-  
-    <h2>Profiles</h2>
+    <input type="date" id="dobField" name="dobField" /> <br>
+        
 </form>
+
+<form action="/create_completed_imz" method = "POST">
+  <h2>Add Administerd Immunizations</h2>
+
+  Immunization <input type="text" id="imzField" name="imzField" /> <br>
+  Date of Administration <input type="date" id="adminDateField" name="adminDateField" /> <br>
+  Reactions <input type="text" id="reactionField" name="reactionField" /> <br>
+  <br><button id="addProfile" type = "submit">Add Profile</button>
+
   
+</form>
+
+
   <div id="container" class="grid"></div>
   {% endblock %} {% block js %}
   <script>

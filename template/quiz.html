@@ -50,6 +50,19 @@
 
     <br><button id="submitQuiz" type = "submit">Submit Quiz</button>
 
+   
+
     </div>
+
+    
+   
+    {% for item in vaccine %}
+        <div class='vaccine'>
+            <h3>#{{ vaccine[0] }} - {{ vaccine[1] }} BY {{ vaccine[2] }}</h3>
+            <i><p>({{ vaccine[3] }} pages)</p></i>
+            <p class='review'>{{ vaccine[4] }}</p>
+            <i><p>Added {{ vaccine[5] }}</p></i>
+        </div>
+    {% endfor %}
 
     {% endblock %}
