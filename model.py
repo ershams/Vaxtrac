@@ -8,34 +8,36 @@ class User(db.Model):
     __tablename__ = "users"
     
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    email = db.Column(db.String, unique=True)
-    password = db.Column(db.String)
+    email = db.Column(db.String, unique=True, nullable = False)
+    password = db.Column(db.String, nullable = False)
+    name = db.Column(db.String)
 
-    profiles = db.relationship("Profile", back_populates="user")
+    # profiles = db.relationship("Profile", back_populates="user")
+    completedimzs = db.relationship("CompletedIMZ", back_populates="user")
 
     def __repr__(self):
         return f'<"user"={self.user_id} "email"={self.email}>'
 
-class Profile(db.Model):
-    __tablename__ = "profiles"
+# class Profile(db.Model):
+#     __tablename__ = "profiles"
 
-    profile_id = db.Column(db.Integer, primary_key = True, autoincrement = True)
-    name = db.Column(db.String, nullable = False)
-    gender = db.Column(db.String)
-    age = db.Column(db.DateTime, nullable = False)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
-    # infant_vaccine_id = db.Column(db.Integer, db.ForeignKey("infant_vaccines.infant_vaccine_id"))
-    # adolescent_vaccine_id = db.Column(db.Integer, db.ForeignKey("adolescent_vaccines.adolescent_vaccine_id"))
-    # adult_vaccine_id = db.Column(db.Integer, db.ForeignKey("adult_vaccines.adult_vaccine_id"))
+#     profile_id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+#     name = db.Column(db.String, nullable = False)
+#     gender = db.Column(db.String)
+#     age = db.Column(db.DateTime, nullable = False)
+#     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
+#     # infant_vaccine_id = db.Column(db.Integer, db.ForeignKey("infant_vaccines.infant_vaccine_id"))
+#     # adolescent_vaccine_id = db.Column(db.Integer, db.ForeignKey("adolescent_vaccines.adolescent_vaccine_id"))
+#     # adult_vaccine_id = db.Column(db.Integer, db.ForeignKey("adult_vaccines.adult_vaccine_id"))
 
-    user = db.relationship("User", back_populates="profiles")
-    infant_vaccines = db.relationship("InfantVaccine", back_populates="profile")
-    adolescent_vaccines = db.relationship("AdolescentVaccine", back_populates="profile")
-    adult_vaccines = db.relationship("AdultVaccine", back_populates="profile")
-    completedimz = db.relationship("CompletedIMZ", back_populates="profile")
+#     user = db.relationship("User", back_populates="profiles")
+#     infant_vaccines = db.relationship("InfantVaccine", back_populates="profile")
+#     adolescent_vaccines = db.relationship("AdolescentVaccine", back_populates="profile")
+#     adult_vaccines = db.relationship("AdultVaccine", back_populates="profile")
+#     completedimz = db.relationship("CompletedIMZ", back_populates="profile")
 
-    def __repr__(self):
-        return f'<"user"={self.user_id}, "name"={self.name} "age"={self.age} "vaccine_status"={self.vaccine_status} "profile_id"={self.profile_id}>'
+    # def __repr__(self):
+    #     return f'<"user"={self.user_id}, "name"={self.name} "age"={self.age} "vaccine_status"={self.vaccine_status} "profile_id"={self.profile_id}>'
 
 class CompletedIMZ(db.Model):
 
@@ -45,16 +47,32 @@ class CompletedIMZ(db.Model):
     imz = db.Column(db.String)
     admin_date = db.Column(db.DateTime)
     reaction = db.Column(db.String)
-    profile_id = db.Column(db.Integer, db.ForeignKey("profiles.profile_id"))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
+    # profile_id = db.Column(db.Integer, db.ForeignKey("profiles.profile_id"))
     
-    profile = db.relationship("Profile", back_populates="completedimz")
+    # profile = db.relationship("Profile", back_populates="completedimz")
+    user = db.relationship("User", back_populates="completedimzs")
+
+class Eligibility(db.Model):
+
+    __tablename__ = "eligiblity"
+
+    quiz_id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+    gender = db.Column(db.String)
+    age = db.Column(db.DateTime)
+    pregnant = db.Column(db.String, nullable = False)
+    travel = db.Column(db.String, nullable = False)
+    chickenpox = db.Column(db.String, nullable = False)
+    fluids = db.Column(db.String, nullable = False)
+    injectables = db.Column(db.String, nullable = False)    
+
 
 class InfantVaccine(db.Model):
     __tablename__ = "infant_vaccines"
 
     infant_vaccine_id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     infant_vaccine_name = db.Column(db.String)
-    profile_id = db.Column(db.Integer, db.ForeignKey("profiles.profile_id"))
+    # profile_id = db.Column(db.Integer, db.ForeignKey("profiles.profile_id"))
     # Vaccine = db.Column(db.String, unique=True)
     birth = db.Column(db.String)
     month_one = db.Column(db.String)
@@ -65,14 +83,14 @@ class InfantVaccine(db.Model):
     month_twelve = db.Column(db.String)
     month_fifteen = db.Column(db.String)
     
-    profile = db.relationship("Profile", back_populates="infant_vaccines")
+    # profile = db.relationship("Profile", back_populates="infant_vaccines")
 
 class AdolescentVaccine(db.Model):
     __tablename__ = "adolescent_vaccines"
 
     adolescent_vaccine_id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     adolescent_vaccine_name = db.Column(db.String)
-    profile_id = db.Column(db.Integer, db.ForeignKey("profiles.profile_id"))
+    # profile_id = db.Column(db.Integer, db.ForeignKey("profiles.profile_id"))
     # Vaccine = db.Column(db.String, unique=True)
     month_eighteen = db.Column(db.String)
     month_nineteen_to_twentyfour = db.Column(db.String)
@@ -84,20 +102,20 @@ class AdolescentVaccine(db.Model):
     sixteen = db.Column(db.String)
     seventeen_to_eighteen = db.Column(db.String)
 
-    profile = db.relationship("Profile", back_populates="adolescent_vaccines")
+    # profile = db.relationship("Profile", back_populates="adolescent_vaccines")
 
 class AdultVaccine(db.Model):
     __tablename__ = "adult_vaccines"
 
     adult_vaccine_id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     adult_vaccine_name = db.Column(db.String)
-    profile_id = db.Column(db.Integer, db.ForeignKey("profiles.profile_id"))
+    # profile_id = db.Column(db.Integer, db.ForeignKey("profiles.profile_id"))
     nineteen_to_twentysix = db.Column(db.String)
     twentyseven_to_fortynine = db.Column(db.String)
     fifty_to_sixtyfour = db.Column(db.String)
     sixtyfive = db.Column(db.String)
     
-    profile = db.relationship("Profile", back_populates="adult_vaccines")
+    # profile = db.relationship("Profile", back_populates="adult_vaccines")
 
 def connect_to_db(flask_app, db_uri="postgresql:///vaxtrac", echo=True):
     flask_app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
