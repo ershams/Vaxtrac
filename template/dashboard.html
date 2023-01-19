@@ -11,117 +11,81 @@
 {% block body %}
 
 
-<form action="/create_profile" method = "POST">
-    <h2>Create New Profile</h2>
+<form action="/create_completed_imz" method = "POST">
+  <h2>Track Immunizations</h2>
+
+  Immunization <input type="text" id="imzField" name="imzField" /> <sp> Date of Administration <input type="date" id="adminDateField" name="adminDateField" /> </sp> 
+  Reactions <input type="text" id="reactionField" name="reactionField" /> <br>
+  <br><button id="addProfile" type = "submit">Add Completed Immunization</button>
+
+  
+</form>
+
+
+<form action="/eligible_imz" method = "POST">
+  Are you <br>
+    
+  <input type="radio" id="genderField" name="maleField" /> <label for="male">Male</label> <br>
+  <input type="radio" id="genderField" name="femaleField" /> <label for="female" >Female</label><br><br>
+
+  When were you born?<br>
+  <input type="date" id="dobField" name="dobField" /> <br><br>
+
+  Are you pregnant or do you plan on becoming pregnant soon?<br>
+  
+  <input type="radio" id="pregnantField" name="pregnantField" /> Yes</input><br>
+  <input type="radio" id="pregnantField" name="pregnantField" /> No </input><br><br>
+
+  Are you planning to travel out of the U.S. in the near future?<br>
+  
+  <input type="radio" id="travelField" name="travelField" /> Yes</input><br>
+  <input type="radio" id="traveltField" name="travelField" /> No </input><br><br>
+
+  Have you ever had the chickenpox vaccine, been diagnosed with chickenpox, or have laboratory results showing you had chickenpox?<br>
+
+  <input type="radio" id="cpField" name="cpField" /> Yes</input><br>
+  <input type="radio" id="cpField" name="cpField" /> No </input><br>
+  <input type="radio" id="cpField" name="cpField" /> Unsure </input><br><br>
+
+  Do you work in healthcare or public safety, and come in contact with blood or body fluids?<br>
+
+  <input type="radio" id="bloodField" name="bloodField" /> Yes</input><br>
+  <input type="radio" id="bloodField" name="bloodField" /> No </input><br><br>
+
+  Do you use insulins or other injectable medications?<br>
+
+  <input type="radio" id="injectField" name="injectField" /> Yes</input><br>
+  <input type="radio" id="injectField" name="injectField" /> No </input><br><br>
+
+
+  <br><button id="submitQuiz" type = "submit">Submit Quiz</button>
+
+    <!-- <h2>Create New Profile</h2>
   
     Name <input type="text" id="nameField" name="nameField" /> <br>Gender
     <input type="radio" id="maleField" name="gender" value="male" /> <label for="male">Male</label>
     <input type="radio" id="femaleField" name="gender" value="female" /> <label for="female" >Female</label>
-    <input type="date" id="dobField" name="dobField" /> <br>
+    <input type="date" id="dobField" name="dobField" /> <br> -->
         
 </form>
 
-<form action="/create_completed_imz" method = "POST">
-  <h2>Add Administerd Immunizations</h2>
+{% for item in vaccine %}
+        <div>
+          <table>
+            <th>Vaccine</th>
+            <th>Administration Date</th>
+            <th>Reaction</th>
+            <tr>
+          <td>{{item}}</td>
+            </tr>
+        </div>
+    {% endfor %}
 
-  Immunization <input type="text" id="imzField" name="imzField" /> <br>
-  Date of Administration <input type="date" id="adminDateField" name="adminDateField" /> <br>
-  Reactions <input type="text" id="reactionField" name="reactionField" /> <br>
-  <br><button id="addProfile" type = "submit">Add Profile</button>
-
-  
-</form>
-
-
-  <div id="container" class="grid"></div>
+  <div class="container" class="grid"></div>
   {% endblock %} {% block js %}
-  <script>
-    function getProfileData() {
-      // Get the up to date card data from DB.
   
-      fetch("/profiles.json")
-        .then((response) => response.json())
-        .then((data) => insertCardData(data));
-    }
-  
-    const createProfileAndAddToContainer = (name, skill) => {
-      const profileElement = document.createElement("div");
-      profileElement.classList.add("card");
-      profileElement.innerHTML = `
-          <p>Name: ${name}</p>
-          <p>Skill: ${skill} </p>
-      `;
-      document.querySelector("#container").append(cardElement);
-    };
-  
-    const insertProfileData = (response) => {
-      // Once the data has been provided by the server,
-      // insert it into the page as an HTML string.
-      const listOfProfiles = response.cards;
-  
-      const container = document.querySelector("#container");
-  
-      // empty the container so it has no content
-      container.innerHTML = "";
-  
-      for (const currentProfile of listOfProfiles)
-        createProfileAndAddToContainer(
-          currentProfile.name,
-          currentProfile.skill,
-        );
-      }
-    const addNewProfile = (evt) => {
-      // Respond to the Add New Card form getting submitted.
-      // This is an event handling function.
-  
-      // Get name that user typed in Name field.
-      const name = document.querySelector("#nameField").value;
-  
-      const skill = document.querySelector("#skillField").value;
-  
-      // Make a request to the server to add the card
-      // the server sends us a response with the new card
-      // We then add this card to the page
-      fetch("/add-profile", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, skill }),
-      })
-        .then((response) => response.json())
-        .then((jsonResponse) => {
-          const name = jsonResponse.profileAdded.name;
-          const gender = jsonResponse.profileAdded.gender;
-          createCardAndAddToContainer(name, skill, imgUrl);
-        });
-    };
-  
-    // Attach the addNewCard function to the 'Add' button click.
-    document.querySelector("#addProfile").addEventListener("click", addNewProfile);
-  
-    // Get intial cards when page initially loads!
-    getCardData();
-  </script>
-  {% endblock %}
-  
-
-<!-- <div>
-    <h2>Create a New Profile</h2>
-
-    Name <input type = "text" id = "nameField" />
-    Gender <input type = "text" id ="genderField" /> -->
-    <!-- add datepicker for age -->
-<!-- </div>
-
-
-  <p>
-    <form action = "/go-to-profile">
-        <button type="submit">Create Profile</button>
-    </form>
-  </p>
-  <br>
-  <p>
     <form action = "/find_vaccines">
         <button type="submit">Find which Vaccines you're eligible for</button>
-    </form> -->
+    </form> 
+
+    {% endblock %}
