@@ -92,10 +92,12 @@ def create_vaccine(Vaccine, nineteen_to_twentysix, twentyseven_to_fortynine, fif
 
 #     return Profile.query.get(profile_id)
 
-def create_completed_imz(imz, admin_date, reaction):
+def create_completed_imz(imz, admin_date, reaction, user_id):
     """Creates and returns new profile"""
 
-    completed_imz = CompletedIMZ(imz=imz, admin_date=admin_date, reaction=reaction)
+    user = User.query.get(user_id)
+
+    completed_imz = CompletedIMZ(imz=imz, admin_date=admin_date, reaction=reaction, user=user)
 
     return completed_imz
 

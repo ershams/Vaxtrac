@@ -47,7 +47,7 @@ class CompletedIMZ(db.Model):
     imz = db.Column(db.String)
     admin_date = db.Column(db.DateTime)
     reaction = db.Column(db.String)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable = False)
     # profile_id = db.Column(db.Integer, db.ForeignKey("profiles.profile_id"))
     
     # profile = db.relationship("Profile", back_populates="completedimz")

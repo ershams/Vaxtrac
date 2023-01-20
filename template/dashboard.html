@@ -69,17 +69,30 @@
         
 </form>
 
-{% for item in vaccine %}
+<div>
+  <form action="/post-form-data" method="POST" enctype="multipart/form-data">
+    <input type="file" name="my-file">
+    <input type="submit">
+  </form>
+</div>
+
+
         <div>
           <table>
+            
+            {% for item in vaccines%}
             <th>Vaccine</th>
+            <tr>{{item.imz}}</tr>
             <th>Administration Date</th>
-            <th>Reaction</th>
-            <tr>
-          <td>{{item}}</td>
-            </tr>
+            <tr>{{item.admin_date}}</tr>
+            {% endfor %}
+            
+            </table>
+           
+
+        
         </div>
-    {% endfor %}
+    
 
   <div class="container" class="grid"></div>
   {% endblock %} {% block js %}
@@ -87,5 +100,7 @@
     <form action = "/find_vaccines">
         <button type="submit">Find which Vaccines you're eligible for</button>
     </form> 
+
+    <p class="top" id="quote"> </p>
 
     {% endblock %}

@@ -1,11 +1,20 @@
 from flask import Flask
 app=Flask(__name__,template_folder='template')
 import psycopg2
+import requests
 
 from flask import (Flask, render_template, request, flash, session,
-                   redirect)
-from model import connect_to_db, db, InfantVaccine, User
+                   redirect, jsonify)
+from model import connect_to_db, db, CompletedIMZ, User
 import crud
+import cloudinary.uploader
+import os
+
+os.system('source secrets.sh')
+
+CLOUDINARY_KEY = os.environ['CLOUDINARY_KEY']
+CLOUDINARY_SECRET = os.environ['CLOUDINARY_SECRET']
+CLOUD_NAME = "dg9svgk9f"
 
 from jinja2 import StrictUndefined
 
@@ -25,15 +34,18 @@ def process_login():
     # if request.method == 'POST':
     email = request.form.get("email")
     password = request.form.get("password")
-    name = request.form.get("name")
+    # print(email)
+    # print(password)
+    # # name = request.form.get("name")
 
     user = crud.get_user_by_email(email)
+    # print(user)
     if not user or user.password != password:
             flash("The email or password you entered was incorrect.")
     else:
             # Log in user by storing the user's email in session
-            session["user_email"] = user.email
-            flash(f"Welcome back, {user.email}!")
+            session["user_id"] = user.user_id
+            flash(f"Welcome back, {user.name}!")
 
     return redirect("/dashboard")
 
@@ -54,14 +66,17 @@ def show_dashboard():
         user = crud.get_user_by_email(logged_in_email)
         
 
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute('SELECT * FROM completedimz where user is not null')
-        vaccine = cur.fetchall()
-        cur.close()
-        conn.close()
+        # conn = get_db_connection()
+        # cur = conn.cursor()
+        # cur.execute('SELECT imz FROM completedimz where user is not null')
+        # vaccine = cur.fetchall()
+        # cur.close()
+        # conn.close()
 
-        return render_template("dashboard.html", vaccine=vaccine)
+        # vaccine = db.session.query(CompletedIMZ.imz)
+        # date = db.session.query(CompletedIMZ.admin_date)
+
+        return render_template("dashboard.html", vaccines=user.completedimzs)
     return redirect ('/')
 
 @app.route("/sign-up")
@@ -198,38 +213,41 @@ def register_user():
 
 #     return redirect("/dashboard")
 
-@app.route("/add-vaccine", methods=["POST"])
-def process_add_vaccine():
-    """Process user login."""
+# @app.route("/login", methods=["POST"])
+# def process_add_vaccine():
+#     """Process user login."""
 
-    # if request.method == 'POST':
-    email = request.form.get("email")
-    password = request.form.get("password")
+#     # if request.method == 'POST':
+#     email = request.form.get("email")
+#     password = request.form.get("password")
 
-    user = crud.get_user_by_email(email)
-    if not user or user.password != password:
-            flash("The email or password you entered was incorrect.")
-    else:
-            # Log in user by storing the user's email in session
-            session["user_email"] = user.email
-            flash(f"Welcome back, {user.email}!")
+#     user = crud.get_user_by_email(email)
+#     if not user or user.password != password:
+#             flash("The email or password you entered was incorrect.")
+#     else:
+#             # Log in user by storing the user's email in session
+#             session["user_email"] = user.email
+#             flash(f"Welcome back, {user.email}!")
 
-    return redirect("/dashboard")
+#     return redirect("/dashboard")
 
 @app.route("/create_completed_imz", methods=["POST"])
 def add_completed_imz():
     """log a new imz."""
 
-    # user = crud.get_user_by_id(user_id)
-    # logged_in_email = session.get(user_id)
+    if 'user_id' not in session:
+        return redirect("/")
 
-    # user_id = User.query.get(user_id)
+    # user = crud.get_user_by_id(user_id)
+    user_id = session.get('user_id')
+
+    user = User.query.get(user_id)
 
     imz = request.form.get('imzField')
     admin_date = request.form.get('adminDateField')
     reaction = request.form.get('reactionField')
 
-    completed_imz = crud.create_completed_imz(imz, admin_date, reaction)
+    completed_imz = crud.create_completed_imz(imz, admin_date, reaction, user_id)
 
     db.session.add(completed_imz)
     db.session.commit()
@@ -254,6 +272,17 @@ def find_eligible_imz():
     db.session.commit()
 
     return redirect("/dashboard")
+
+@app.route("/api/quotes")
+def get_quotes():
+    """Return random inspo quote from API call."""
+
+    url = 'https://api.goprogram.ai/inspiration'
+    headers = {'content-type': 'application/json'}
+    res_obj = requests.get(url, headers=headers)
+    quotes = res_obj.json()
+
+    return jsonify(quotes)
 
 if __name__ == "__main__":
     connect_to_db(app)

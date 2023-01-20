@@ -101,5 +101,5 @@ adult_table.to_sql('adult_vaccines', engine, if_exists='append', index=False)
 # db_vaccine = crud.create_vaccine(Vaccine, Birth, month_one, month_two, month_four, month_six, month_nine, month_twelve, month_fifteen, month_eighteen, month_nineteen, two_to_four, four_to_six, seven_to_ten, eleven_to_twelve, thirteen_to_fifteen, sixteen, seventeen_to_eighteen, nineteen_to_twentysix, twentyseven_to_fortynine, fifty_to_sixtyfour, sixtyfive)
 # vaccines_in_db.append(db_vaccine)
 
-model.db.session.add_all(infant, adolescent, adult_table)
+model.db.session.add_all(vaccines_in_db)
 model.db.session.commit()
