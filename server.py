@@ -2,6 +2,7 @@ from flask import Flask
 app=Flask(__name__,template_folder='template')
 import psycopg2
 import requests
+from pprint import pformat
 
 from flask import (Flask, render_template, request, flash, session,
                    redirect, jsonify)
@@ -39,7 +40,7 @@ def process_login():
     # # name = request.form.get("name")
 
     user = crud.get_user_by_email(email)
-    # print(user)
+    print(user)
     if not user or user.password != password:
             flash("The email or password you entered was incorrect.")
     else:
@@ -75,9 +76,13 @@ def show_dashboard():
 
         # vaccine = db.session.query(CompletedIMZ.imz)
         # date = db.session.query(CompletedIMZ.admin_date)
+        print(user)
+        print(user.completedimzs)
 
-        return render_template("dashboard.html", vaccines=user.completedimzs)
-    return redirect ('/')
+        
+
+    return render_template("dashboard.html")
+    # return redirect ('/')
 
 @app.route("/sign-up")
 def show_sign_up_form():
@@ -147,30 +152,6 @@ def show_quiz():
 
     return render_template("quiz.html", vaccine=vaccine)
 
-# @app.route("/registration", methods=["POST"])
-# def create_new_user():
-#     """Create a new user."""
-
-#     email = request.form.get("email")
-#     password = request.form.get("password")
-#     # fname = request.form.get("fname")
-#     # lname = request.form.get("lname")
-
-#     user = User.get_by_email(email)
-
-#     if user:
-#         flash("A user is already registered with that email.")
-#     else:
-#         user = User.create(email = email,
-#                             password = password)
-#         #                     fname = fname,
-#         #                     lname=lname)
-#         db.session.add(user)
-#         db.session.commit()
-#         flash(f"Welcome to MedBuddy! Please log in.")
-    
-#     return redirect("/")
-
 @app.route("/registration", methods=["POST"])
 def register_user():
     """Create a new user."""
@@ -192,45 +173,6 @@ def register_user():
 
     return redirect('/')
 
-# @app.route("/create_profile", methods=["POST"])
-# def add_profile():
-#     """Create and log a new profile."""
-#     logged_in_email = session.get("user_email")
-#     if logged_in_email:
-
-#         user = crud.get_user_by_email(logged_in_email)
-
-#         # print(user)
-
-#         name = request.form.get('nameField')
-#         # print(type(name))
-#         age = request.form.get('dobField')
-#         gender = request.form.get('gender')
-        
-#         profile = crud.create_profile(user, name, age, gender)
-#         db.session.add(profile)
-#         db.session.commit()
-
-#     return redirect("/dashboard")
-
-# @app.route("/login", methods=["POST"])
-# def process_add_vaccine():
-#     """Process user login."""
-
-#     # if request.method == 'POST':
-#     email = request.form.get("email")
-#     password = request.form.get("password")
-
-#     user = crud.get_user_by_email(email)
-#     if not user or user.password != password:
-#             flash("The email or password you entered was incorrect.")
-#     else:
-#             # Log in user by storing the user's email in session
-#             session["user_email"] = user.email
-#             flash(f"Welcome back, {user.email}!")
-
-#     return redirect("/dashboard")
-
 @app.route("/create_completed_imz", methods=["POST"])
 def add_completed_imz():
     """log a new imz."""
@@ -241,7 +183,7 @@ def add_completed_imz():
     # user = crud.get_user_by_id(user_id)
     user_id = session.get('user_id')
 
-    user = User.query.get(user_id)
+    # user = User.query.get(user_id)
 
     imz = request.form.get('imzField')
     admin_date = request.form.get('adminDateField')
@@ -253,6 +195,18 @@ def add_completed_imz():
     db.session.commit()
 
     return redirect("/dashboard")
+
+@app.route("/post-form-data", methods=["POST"])
+def upload_image():
+    my_file = request.files['my-file']
+
+    result = cloudinary.uploader.upload(my_file,
+                                        api_key = CLOUDINARY_KEY,
+                                        api_secret = CLOUDINARY_SECRET,
+                                        cloud_name = CLOUD_NAME)
+
+    img_url = result['secure_url']
+    return redirect ('/dashboard', img_url=img_url)    
 
 @app.route("/eligible_imz", methods=["POST"])
 def find_eligible_imz():
@@ -273,16 +227,35 @@ def find_eligible_imz():
 
     return redirect("/dashboard")
 
-@app.route("/api/quotes")
-def get_quotes():
-    """Return random inspo quote from API call."""
+@app.route("/add_vaccines")
+def show_vaccines():
 
-    url = 'https://api.goprogram.ai/inspiration'
-    headers = {'content-type': 'application/json'}
-    res_obj = requests.get(url, headers=headers)
-    quotes = res_obj.json()
+    return render_template ('/add_vaccines.html')
 
-    return jsonify(quotes)
+@app.route('/allvaccines/search')
+def find_vaccines():
+    """Search for vaccines"""
+
+    brand_name = request.args.get('brand_name')
+
+    
+    url = 'https://api.fda.gov/drug/ndc.json'
+    #pass in all search endpoints 
+    payload = {'search': brand_name}
+
+
+    response = requests.get(url, params=payload)
+    data = response.json()
+       
+    if '_embedded' in data:
+        vaccines = data['_embedded']['vaccines']
+    else:
+        vaccines = []
+
+    return render_template('search-results.html',
+                           pformat=pformat,
+                           data=data,
+                           results=vaccines)
 
 if __name__ == "__main__":
     connect_to_db(app)

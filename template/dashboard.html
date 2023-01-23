@@ -80,12 +80,7 @@
         <div>
           <table>
             
-            {% for item in vaccines%}
-            <th>Vaccine</th>
-            <tr>{{item.imz}}</tr>
-            <th>Administration Date</th>
-            <tr>{{item.admin_date}}</tr>
-            {% endfor %}
+           
             
             </table>
            
@@ -102,5 +97,7 @@
     </form> 
 
     <p class="top" id="quote"> </p>
+
+    <script src ="/static/js/profile.js" type="text/javascript"></script>
 
     {% endblock %}
