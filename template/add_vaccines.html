@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Vaxtrac{% endblock %}
+
+{% block head %} 
+
+
+{% endblock %}
+
+
+{% block body %}
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h2>Search for Immunizations</h2>
+
+      <form method="GET" action="/allvaccines/search">
+        <div class="row">
+          <label class="form-label above" for="brand_name">Search Vaccine Name</label>
+          <small class="form-text text-muted">
+            Leave this blank to get all immunizations
+          </small>
+
+          <input
+            id="brand_name"
+            class="form-control"
+            type="text"
+            name="brand_name"
+          >
+        </div>
+        <div class="row">
+          <label class="form-label above" for="search-zip">Generic name</label>
+
+          <input
+            id="search-zip"
+            class="form-control"
+            type="text"
+            name="zipcode"
+          >
+        </div>
+
+        
+            <input type="submit" value="Look for Immunizations" class="btn btn-primary">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+    
+
+      {% endblock %}
