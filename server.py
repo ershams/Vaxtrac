@@ -6,7 +6,7 @@ from pprint import pformat
 
 from flask import (Flask, render_template, request, flash, session,
                    redirect, jsonify)
-from model import connect_to_db, db, CompletedIMZ, User
+from model import connect_to_db, db, CompletedIMZ, User, Eligibility
 import crud
 import cloudinary.uploader
 import os
@@ -102,55 +102,9 @@ def get_db_connection():
 def show_quiz():
     """take use to sign-up form"""
 
-    # conn = get_db_connection()
-    # cur = conn.cursor()
-    # cur.execute('SELECT * FROM Infant_Vaccines where birth is not null')
-    # vaccine = cur.fetchall()
-    # cur.close()
-    # conn.close()
-    # conn = get_db_connection()
-    # cur = conn.cursor()
-    # cur.execute('SELECT infant_vaccine_name FROM Infant_Vaccines where birth is not null or month_two is not null')
-    # vaccine_one = cur.fetchall()
-    # cur.close()
-    # conn.close()
-    # conn = get_db_connection()
-    # cur = conn.cursor()
-    # cur.execute('SELECT infant_vaccine_name FROM Infant_Vaccines where birth is not null or month_two is not null or month_four is not null')
-    # vaccine_four = cur.fetchall()
-    # cur.close()
-    # conn.close()
-   
+    
 
-    # vaccine = []
-
-    # for items in vaccine_birth:
-    #     if items not in vaccine:
-    #         vaccine.append(items)
-
-    # vacc_one_list = []
-
-    # for items in vaccine_one:
-    #     if items not in vacc_one_list:
-    #         vacc_one_list.append(items)
-
-    # vacc_four_list = []
-
-    # for items in vaccine_four:
-    #     if items not in vacc_four_list:
-    #         vacc_one_list.append(items)
-
-    # vaccine = InfantVaccine.query.filter(InfantVaccine.month_four != None)
-
-    vaccine = crud.inf_vacc_two_to_four()
-
-    vaccine_birth = []
-
-    # for item in vaccine:
-    #     if item not in vaccine_birth:
-    #         vaccine_birth.append(item)
-
-    return render_template("quiz.html", vaccine=vaccine)
+    return render_template("quiz.html")
 
 @app.route("/registration", methods=["POST"])
 def register_user():
@@ -225,7 +179,7 @@ def find_eligible_imz():
     db.session.add(eligibility)
     db.session.commit()
 
-    return redirect("/dashboard")
+    return redirect("/recommended")
 
 @app.route("/add_vaccines")
 def show_vaccines():
@@ -246,7 +200,10 @@ def find_vaccines():
 
     response = requests.get(url, params=payload)
     data = response.json()
-       
+  
+    genericName = data['results'][0]["generic_name"]
+    print(genericName)
+    
     if '_embedded' in data:
         vaccines = data['_embedded']['vaccines']
     else:
@@ -256,6 +213,15 @@ def find_vaccines():
                            pformat=pformat,
                            data=data,
                            results=vaccines)
+
+@app.route("/recommended")
+def show_results():
+
+    age = session.get('age')
+
+    age = Eligibility.query.first(age)
+
+    return render_template("recommended.html", age = age)
 
 if __name__ == "__main__":
     connect_to_db(app)

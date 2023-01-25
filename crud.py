@@ -108,6 +108,11 @@ def create_eligibility(gender, age, pregnant, travel, chickenpox, fluids, inject
 
     return eligibility
 
+def calculateAge(birthDate):
+    days_in_month = 30.437   
+    age = int((date.today() - birthDate).days / days_in_month)
+    return age
+
 def get_db_connection():
     conn = psycopg2.connect(
     host = "localhost",

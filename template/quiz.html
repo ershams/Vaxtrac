@@ -13,54 +13,54 @@
 <div>
     <h2>Vaccine Eligibility</h2>
   
-    Are you <br>
+</form>
+
+
+<form onsubmit="handleForm(event)" action="/eligible_imz" method = "POST">
+  Are you <br>
     
-    <input type="radio" id="maleField" name="gender" value="male" /> <label for="male">Male</label> <br>
-    <input type="radio" id="femaleField" name="gender" value="female" /> <label for="female" >Female</label><br><br>
+  <input type="radio" id="genderField" name="maleField" /> <label for="male">Male</label> <br>
+  <input type="radio" id="genderField" name="femaleField" /> <label for="female" >Female</label><br><br>
 
-    When were you born?<br>
-    <input type="date" id="dobField" name="DOB" /> <br><br>
+  When were you born?<br>
+  <input type="date" id="dobField" name="dobField" /> <br><br>
 
-    Are you pregnant or do you plan on becoming pregnant soon?<br>
-    
-    <input type="radio" id="pregnantYes" name="pregnant" value="pregnantYes" /> Yes</input><br>
-    <input type="radio" id="pregnantNo" name="pregnant" value="pregnantNo" /> No </input><br><br>
+  Are you pregnant or do you plan on becoming pregnant soon?<br>
+  
+  <input type="radio" id="pregnantField" name="pregnantField" /> Yes</input><br>
+  <input type="radio" id="pregnantField" name="pregnantField" /> No </input><br><br>
 
-    Are you planning to travel out of the U.S. in the near future?<br>
-    
-    <input type="radio" id="travelYes" name="travel" value="travelYes" /> Yes</input><br>
-    <input type="radio" id="traveltNo" name="travel" value="traveltNo" /> No </input><br><br>
+  Are you planning to travel out of the U.S. in the near future?<br>
+  
+  <input type="radio" id="travelField" name="travelField" /> Yes</input><br>
+  <input type="radio" id="traveltField" name="travelField" /> No </input><br><br>
 
-    Have you ever had the chickenpox vaccine, been diagnosed with chickenpox, or have laboratory results showing you had chickenpox?<br>
+  Have you ever had the chickenpox vaccine, been diagnosed with chickenpox, or have laboratory results showing you had chickenpox?<br>
 
-    <input type="radio" id="cpYes" name="chickenpox" value="cpYes" /> Yes</input><br>
-    <input type="radio" id="cpNo" name="chickenpox" value="cpNo" /> No </input><br>
-    <input type="radio" id="cpUnsure" name="chickenpox" value="cpUnsure" /> Unsure </input><br><br>
+  <input type="radio" id="cpField" name="cpField" /> Yes</input><br>
+  <input type="radio" id="cpField" name="cpField" /> No </input><br>
+  <input type="radio" id="cpField" name="cpField" /> Unsure </input><br><br>
 
-    Do you work in healthcare or public safety, and come in contact with blood or body fluids?<br>
+  Do you work in healthcare or public safety, and come in contact with blood or body fluids?<br>
 
-    <input type="radio" id="bloodYes" name="chickenpox" value="bloodYes" /> Yes</input><br>
-    <input type="radio" id="bloodNo" name="chickenpox" value="bloodNo" /> No </input><br><br>
+  <input type="radio" id="bloodField" name="bloodField" /> Yes</input><br>
+  <input type="radio" id="bloodField" name="bloodField" /> No </input><br><br>
 
-    Do you use insulins or other injectable medications?<br>
+  Do you use insulins or other injectable medications?<br>
 
-    <input type="radio" id="injectYes" name="inject" value="injectYes" /> Yes</input><br>
-    <input type="radio" id="injectNo" name="inject" value="injectYes" /> No </input><br><br>
+  <input type="radio" id="injectField" name="injectField" /> Yes</input><br>
+  <input type="radio" id="injectField" name="injectField" /> No </input><br><br>
 
 
-    <br><button id="submitQuiz" type = "submit">Submit Quiz</button>
-
-   
-
-    </div>
+  <br><button id="submitQuiz" type = "submit">Submit Quiz</button>
 
     
-   
-    {% for item in vaccine %}
-        <div class='vaccine'>
-            <td>{{item}}</td>
-        </div>
-    {% endfor %}
+  <!-- <script>
+    function handleForm(event){
+      event.preventDefault()
+      
+    }
+  </script> -->
 
 
 
