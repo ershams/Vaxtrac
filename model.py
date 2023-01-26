@@ -58,13 +58,21 @@ class Eligibility(db.Model):
     __tablename__ = "eligiblity"
 
     quiz_id = db.Column(db.Integer, primary_key = True, autoincrement = True)
-    gender = db.Column(db.String)
+    genderM = db.Column(db.String)
+    genderF = db.Column(db.String)
+    genderN = db.Column(db.String)
     age = db.Column(db.DateTime)
-    pregnant = db.Column(db.String, nullable = False)
-    travel = db.Column(db.String, nullable = False)
-    chickenpox = db.Column(db.String, nullable = False)
-    fluids = db.Column(db.String, nullable = False)
-    injectables = db.Column(db.String, nullable = False)    
+    pregnantN = db.Column(db.String)
+    pregnantY = db.Column(db.String)
+    travelN = db.Column(db.String)
+    travelY = db.Column(db.String)
+    chickenpoxY = db.Column(db.String)
+    chickenpoxN = db.Column(db.String)
+    chickenpoxU = db.Column(db.String)
+    fluidsY = db.Column(db.String)
+    fluidsN = db.Column(db.String)
+    injectablesY = db.Column(db.String)
+    injectablesN = db.Column(db.String)    
 
 
 class InfantVaccine(db.Model):

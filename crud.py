@@ -101,7 +101,28 @@ def create_completed_imz(imz, admin_date, reaction, user_id):
 
     return completed_imz
 
-def create_eligibility(gender, age, pregnant, travel, chickenpox, fluids, injectables):
+def get_user_vaccine():
+
+    vaccine = db.session.query(CompletedIMZ.imz)
+
+    return vaccine
+
+def get_user_vaccine_date():
+
+    date = db.session.query(CompletedIMZ.admin_date)
+    
+    return date
+
+def get_user_vaccine_reaction():
+
+    reaction = db.session.query(CompletedIMZ.reaction)
+    
+    return reaction
+
+
+def create_eligibility(genderM, genderF, genderN, age, pregnantY, pregnantN, 
+                                        travelY, travelN, chickenpoxY, chickenpoxN, chickenpoxU, 
+                                        fluidsY, fluidsN, injectablesY, injectablesN):
     """Creates and returns new profile"""
 
     eligibility = Eligibility(gender=gender, age=age, pregnant=pregnant, travel=travel, chickenpox=chickenpox, fluids=fluids, injectables=injectables)

@@ -17,57 +17,25 @@
   Immunization <input type="text" id="imzField" name="imzField" /> <sp> Date of Administration <input type="date" id="adminDateField" name="adminDateField" /> </sp> 
   Reactions <input type="text" id="reactionField" name="reactionField" /> <br>
   <br><button id="addProfile" type = "submit">Add Completed Immunization</button>
-
-  
-<!-- </form>
-
-
-<form action="/eligible_imz" method = "POST">
-  Are you <br>
-    
-  <input type="radio" id="genderField" name="maleField" /> <label for="male">Male</label> <br>
-  <input type="radio" id="genderField" name="femaleField" /> <label for="female" >Female</label><br><br>
-
-  When were you born?<br>
-  <input type="date" id="dobField" name="dobField" /> <br><br>
-
-  Are you pregnant or do you plan on becoming pregnant soon?<br>
-  
-  <input type="radio" id="pregnantField" name="pregnantField" /> Yes</input><br>
-  <input type="radio" id="pregnantField" name="pregnantField" /> No </input><br><br>
-
-  Are you planning to travel out of the U.S. in the near future?<br>
-  
-  <input type="radio" id="travelField" name="travelField" /> Yes</input><br>
-  <input type="radio" id="traveltField" name="travelField" /> No </input><br><br>
-
-  Have you ever had the chickenpox vaccine, been diagnosed with chickenpox, or have laboratory results showing you had chickenpox?<br>
-
-  <input type="radio" id="cpField" name="cpField" /> Yes</input><br>
-  <input type="radio" id="cpField" name="cpField" /> No </input><br>
-  <input type="radio" id="cpField" name="cpField" /> Unsure </input><br><br>
-
-  Do you work in healthcare or public safety, and come in contact with blood or body fluids?<br>
-
-  <input type="radio" id="bloodField" name="bloodField" /> Yes</input><br>
-  <input type="radio" id="bloodField" name="bloodField" /> No </input><br><br>
-
-  Do you use insulins or other injectable medications?<br>
-
-  <input type="radio" id="injectField" name="injectField" /> Yes</input><br>
-  <input type="radio" id="injectField" name="injectField" /> No </input><br><br>
-
-
-  <br><button id="submitQuiz" type = "submit">Submit Quiz</button> -->
-
-    <!-- <h2>Create New Profile</h2>
-  
-    Name <input type="text" id="nameField" name="nameField" /> <br>Gender
-    <input type="radio" id="maleField" name="gender" value="male" /> <label for="male">Male</label>
-    <input type="radio" id="femaleField" name="gender" value="female" /> <label for="female" >Female</label>
-    <input type="date" id="dobField" name="dobField" /> <br> -->
         
 </form>
+
+<table>
+  <tr>
+  <th>Immunization</th>
+  <th>Adminstraton Date</th>
+  <th>Reaction</th>
+  </tr>
+  <td>{% for item in vaccine %}
+    {{item}}<br>
+    {% endfor %}</td>
+    <td>{% for item in date %}
+      {{item}}<br>
+      {% endfor %}</td>
+      <td>{% for item in reaction %}
+        {{item}}<br>
+        {% endfor %}</td>
+</table>
 
 <div>
   <form action="/post-form-data" method="POST" enctype="multipart/form-data">
@@ -76,28 +44,5 @@
   </form>
 </div>
 
-
-        <div>
-          <table>
-            
-           
-            
-            </table>
-           
-
-        
-        </div>
-    
-
-  <div class="container" class="grid"></div>
-  {% endblock %} {% block js %}
-  
-    <form action = "/find_vaccines">
-        <button type="submit">Find which Vaccines you're eligible for</button>
-    </form> 
-
-    <p class="top" id="quote"> </p>
-
-    <script src ="/static/js/profile.js" type="text/javascript"></script>
-
+      
     {% endblock %}

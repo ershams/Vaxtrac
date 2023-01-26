@@ -19,37 +19,38 @@
 <form onsubmit="handleForm(event)" action="/eligible_imz" method = "POST">
   Are you <br>
     
-  <input type="radio" id="genderField" name="maleField" /> <label for="male">Male</label> <br>
-  <input type="radio" id="genderField" name="femaleField" /> <label for="female" >Female</label><br><br>
+  <input type="radio" id="maleField" name="maleField" /> <label for="male">Male</label> <br>
+  <input type="radio" id="femaleField" name="femaleField" /> <label for="female" >Female</label><br>
+  <input type="radio" id="nbField" name="nbField" /> <label for="female" >Nonbinary</label><br><br>
 
   When were you born?<br>
   <input type="date" id="dobField" name="dobField" /> <br><br>
 
   Are you pregnant or do you plan on becoming pregnant soon?<br>
   
-  <input type="radio" id="pregnantField" name="pregnantField" /> Yes</input><br>
-  <input type="radio" id="pregnantField" name="pregnantField" /> No </input><br><br>
+  <input type="radio" id="pregnantYField" name="pregnantYField" /> Yes</input><br>
+  <input type="radio" id="pregnantNField" name="pregnantNField" /> No </input><br><br>
 
   Are you planning to travel out of the U.S. in the near future?<br>
   
-  <input type="radio" id="travelField" name="travelField" /> Yes</input><br>
-  <input type="radio" id="traveltField" name="travelField" /> No </input><br><br>
+  <input type="radio" id="travelYField" name="travelYField" /> Yes</input><br>
+  <input type="radio" id="travelNField" name="travelNField" /> No </input><br><br>
 
   Have you ever had the chickenpox vaccine, been diagnosed with chickenpox, or have laboratory results showing you had chickenpox?<br>
 
-  <input type="radio" id="cpField" name="cpField" /> Yes</input><br>
-  <input type="radio" id="cpField" name="cpField" /> No </input><br>
-  <input type="radio" id="cpField" name="cpField" /> Unsure </input><br><br>
+  <input type="radio" id="cpYField" name="cpYField" /> Yes</input><br>
+  <input type="radio" id="cpNField" name="cpNField" /> No </input><br>
+  <input type="radio" id="cpUField" name="cpUField" /> Unsure </input><br><br>
 
   Do you work in healthcare or public safety, and come in contact with blood or body fluids?<br>
 
-  <input type="radio" id="bloodField" name="bloodField" /> Yes</input><br>
-  <input type="radio" id="bloodField" name="bloodField" /> No </input><br><br>
+  <input type="radio" id="bloodYField" name="bloodYField" /> Yes</input><br>
+  <input type="radio" id="bloodNField" name="bloodNField" /> No </input><br><br>
 
   Do you use insulins or other injectable medications?<br>
 
-  <input type="radio" id="injectField" name="injectField" /> Yes</input><br>
-  <input type="radio" id="injectField" name="injectField" /> No </input><br><br>
+  <input type="radio" id="injectYField" name="injectYField" /> Yes</input><br>
+  <input type="radio" id="injectNField" name="injectNField" /> No </input><br><br>
 
 
   <br><button id="submitQuiz" type = "submit">Submit Quiz</button>

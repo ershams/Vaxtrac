@@ -8,15 +8,20 @@
   <link rel="stylesheet" href ="static/search-style.css">
 </head>
 <body>
-  <form method="GET" action="/allvaccines/search">
+  <form method="POST" action="/allvaccines/search">
     <div class="row">
       <label class="form-label above" for="brand_name">Search Vaccine Name</label></div>
   <div class = "container">
-    <input type="text" id="brand_name" name="brand_name" class="autocomplete_input">
+    <select name="brand_name" id="brand_name">
+      
+    </select>
+    <!-- <input type="text" id="brand_name" name="brand_name" class="autocomplete_input">
     <ul class = "autocomplete_list" id ="brandName_list">
 
-    </ul>
+    </ul> -->
+    <input type="submit">Find Vaccine Info
   </div>
+  </form>
 
   <script src ="static/js/autocomplete.js"></script>
 </body>
