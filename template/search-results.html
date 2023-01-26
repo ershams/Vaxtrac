@@ -7,16 +7,19 @@
         </a>
       </div>
     </div>
-
-    <!-- <div class="row">
-      <div class="col">
-        <div id="results-as-json">
-          <h2>Results as JSON</h2>
-          <pre>{{ pformat(data) }}</pre> -->
-        <!-- </div> -->
-
-           <p>{{data['results'][0]["generic_name"]}}</p>
+          <p>Brand Name: {{data['results'][0]["brand_name"]}}</p>
+           <p>Generic Name: {{data['results'][0]["generic_name"]}}</p>
               
+
+           <p>What is {{data['results'][0]["brand_name"]}}?</p>
+           <p>{{texts}}</p>
+
+           <p>Warnings</p>
+           <p>{{warnings}}</p>
+
+           {% for item in vaccine %}
+           {{item}}
+           {%endfor%}
 
         
 {% endblock %}

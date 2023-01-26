@@ -3,6 +3,7 @@ app=Flask(__name__,template_folder='template')
 import psycopg2
 import requests
 from pprint import pformat
+from bs4 import BeautifulSoup
 
 from flask import (Flask, render_template, request, flash, session,
                    redirect, jsonify)
@@ -205,9 +206,9 @@ def find_vaccines():
 
     response = requests.get(url, params=payload)
     data = response.json()
-  
-    genericName = data['results'][0]["generic_name"]
-    print(genericName)
+
+    texts = crud.get_pt_education(data)
+    warnings = crud.get_warnings(data)
     
     if '_embedded' in data:
         vaccines = data['_embedded']['vaccines']
@@ -217,7 +218,9 @@ def find_vaccines():
     return render_template('search-results.html',
                            pformat=pformat,
                            data=data,
-                           results=vaccines)
+                           results=vaccines,
+                           texts=texts,
+                           warnings=warnings)
 
 @app.route("/recommended")
 def show_results():
@@ -225,11 +228,12 @@ def show_results():
     # age = session.get('age')
 
     age = db.session.query(Eligibility.age).order_by(Eligibility.quiz_id.desc()).first()
-    sex = db.session.query(Eligibility.gender).order_by(Eligibility.quiz_id.desc()).first()
-    pregnant = db.session.query(Eligibility.pregnant).order_by(Eligibility.quiz_id.desc()).first()
-    travel = db.session.query(Eligibility.travel).order_by(Eligibility.quiz_id.desc()).first()
+    sex = db.session.query(Eligibility.genderM).order_by(Eligibility.quiz_id.desc()).first()
+    pregnantY = db.session.query(Eligibility.pregnantY).order_by(Eligibility.quiz_id.desc()).first()
+    travel = db.session.query(Eligibility.travelY).order_by(Eligibility.quiz_id.desc()).first()
+    injectables = db.session.query(Eligibility.injectablesY).order_by(Eligibility.quiz_id.desc()).first()
 
-    return render_template("recommended.html", age = age, sex=sex, pregnant=pregnant, travel=travel)
+    return render_template("recommended.html", age = age, sex=sex, pregnantY=pregnantY, travel=travel, injectables=injectables)
 
 if __name__ == "__main__":
     connect_to_db(app)

@@ -2,6 +2,8 @@
 
 from model import db, User, InfantVaccine, AdolescentVaccine, AdultVaccine, CompletedIMZ, Eligibility, connect_to_db
 import psycopg2
+from bs4 import BeautifulSoup
+import requests
 
 def create_user(email, password, name):
     """Create and return new user"""
@@ -125,9 +127,33 @@ def create_eligibility(genderM, genderF, genderN, age, pregnantY, pregnantN,
                                         fluidsY, fluidsN, injectablesY, injectablesN):
     """Creates and returns new profile"""
 
-    eligibility = Eligibility(gender=gender, age=age, pregnant=pregnant, travel=travel, chickenpox=chickenpox, fluids=fluids, injectables=injectables)
+    eligibility = Eligibility(genderM=genderM, genderF=genderF, genderN=genderN, age=age, pregnantN=pregnantN, pregnantY=pregnantY, travelN=travelN, travelY=travelY, chickenpoxN=chickenpoxN, chickenpoxY=chickenpoxY, chickenpoxU=chickenpoxU, fluidsN=fluidsN, fluidsY=fluidsY, injectablesN=injectablesN, injectablesY=injectablesY)
 
     return eligibility
+
+def get_pt_education(data):
+    brandName = data['results'][0]['brand_name']
+    link = f'https://www.drugs.com/{brandName}.html'
+
+    page1 = requests.get(link)
+    education = BeautifulSoup(page1.content, 'html.parser')
+
+    target = education.find('h2')
+    texts = target.find_next_sibling('p').text
+
+    return texts
+
+def get_warnings(data):
+    brandName = data['results'][0]['brand_name']
+    link = f'https://www.drugs.com/{brandName}.html'
+
+    page1 = requests.get(link)
+    education = BeautifulSoup(page1.content, 'html.parser')
+
+    target = education.find('h2', text = "Warnings")
+    warnings = target.find_next_sibling('p').text
+
+    return warnings
 
 def calculateAge(birthDate):
     days_in_month = 30.437   
@@ -155,6 +181,7 @@ def inf_vacc_brith_to_one():
 
 def inf_vacc_two_to_four():
     vaccine = InfantVaccine.query.filter(InfantVaccine.month_two != None)
+    travel = db.session.query(Eligibility.travelY).order_by(Eligibility.quiz_id.desc()).first()
     
     return vaccine
 
