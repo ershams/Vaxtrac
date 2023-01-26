@@ -4,13 +4,54 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>
-      {% block title %}{% endblock %}
+      {% block title %}Vaxtrac{% endblock %}
+      <style>
+        section{
+          padding: 60 px 0;
+        }
+      </style>
+
     </title>
     
-    
+    <!-- Bootstrap CSS basic-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-
         GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+      
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+      <nav class="navbar">
+        <div class="container-xxl">
+          <span class="fw-bold text-secondary">
+            Vaxtrac
+        </span>
+          <a href="/dashboard" class="navbar-brand">
+            <span class="fw-bold text-secondary">
+              Track Your Immnizations
+          </span>
+          <a href="/quiz" class="navbar-brand">
+            <span class="fw-bold text-secondary">
+              Find Eligibily Immunizations
+            </span>
+            <a href="/add_vaccines" class="navbar-brand">
+              <span class="fw-bold text-secondary">
+                Learn About Immunizations
+            </span>
+            </a>
+            <span class="lead text-end">
+              Logout
+            </span>
+          </div>
+      </nav>
+      <section id ="intro">
+        <div class="container">
+          <div class="row">
+            <div class="col-5 text-center text-md-start">
+              <!-- <div class="bg-primary m-0 p-3">Vaxtrac</div> -->
+            </div>
+          </div>
+        </div>
+      </section>
+
       
     {% block head %}{% endblock %}
   </head>

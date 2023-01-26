@@ -10,17 +10,43 @@
 
 {% block body %}
 
-
+<div class="container m-5"><h2>Track Immunizations</h2></div>
 <form action="/create_completed_imz" method = "POST">
-  <h2>Track Immunizations</h2>
-
-  Immunization <input type="text" id="imzField" name="imzField" /> <sp> Date of Administration <input type="date" id="adminDateField" name="adminDateField" /> </sp> 
-  Reactions <input type="text" id="reactionField" name="reactionField" /> <br>
+  <div class="row ml-2 my-2">
+    <div class="col-2">
+      <div class="px-3">
+      Immunization 
+    </div>
+    </div>
+    <div class="col-2">
+      Date of Administration 
+    </div>
+    <div class="col-2">
+      Reactions 
+    </div>
+  </div> 
+  <div class="row ml-2 my-2">
+    <div class="col-2">
+      <div class="px-3">
+      <input type="text" id="imzField" name="imzField" />
+    </div>
+    </div>
+    <div class="col-2">
+      <input type="date" id="adminDateField" name="adminDateField" /> 
+    </div>
+    <div class="col-2">
+      <input type="text" id="reactionField" name="reactionField" /> 
+    </div>
+  </div> 
+    </sp> 
+   
   <br><button id="addProfile" type = "submit">Add Completed Immunization</button>
         
 </form>
 
-<table>
+<div class="px-5 col-5">
+<table class="table table-striped">
+  
   <tr>
   <th>Immunization</th>
   <th>Adminstraton Date</th>
@@ -35,7 +61,9 @@
       <td>{% for item in reaction %}
         {{item}}<br>
         {% endfor %}</td>
+        
 </table>
+</div>
 
 <div>
   <form action="/post-form-data" method="POST" enctype="multipart/form-data">
