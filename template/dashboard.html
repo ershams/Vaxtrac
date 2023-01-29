@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 {% block title %}Vaxtrac{% endblock %}
 
@@ -48,19 +47,22 @@
 <table class="table table-striped">
   
   <tr>
-  <th>Immunization</th>
-  <th>Adminstraton Date</th>
-  <th>Reaction</th>
-  </tr>
-  <td>{% for item in vaccine %}
-    {{item}}<br>
-    {% endfor %}</td>
-    <td>{% for item in date %}
-      {{item}}<br>
-      {% endfor %}</td>
-      <td>{% for item in reaction %}
-        {{item}}<br>
-        {% endfor %}</td>
+    <th>Immunization</th>
+    <th>Adminstraton Date</th>
+    <th>Reaction</th>
+      </tr>
+        {% for item in vaccine %}
+        <td>
+          {{item.imz}}<br>
+        </td>
+        <td>
+          {{item.admin_date.strftime("%m/%d/%Y")}}<br>
+        </td>
+        <td>
+            {{item.reaction}}<br>
+          </td>
+        {% endfor %}
+
         
 </table>
 </div>
@@ -71,6 +73,5 @@
     <input type="submit">
   </form>
 </div>
-
       
     {% endblock %}

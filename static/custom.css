@@ -1,7 +1,6 @@
 body{
     font-family: 'Montserrat', sans-serif;
     font-size: large;
-    background-image: url('https://www.niaid.nih.gov/themes/custom/niaid-drupal-theme/patternlab/src/images/waves.svg');
     height: 100%;
     background-repeat: no-repeat;
     background-size: cover;
@@ -15,3 +14,15 @@ body{
     background-repeat: no-repeat; /* Do not repeat the image */
     background-size: cover; 
   }
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: rgb(236, 229, 229);
+  color: rgb(8, 8, 8);
+  text-align: left;
+}
+
+

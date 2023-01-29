@@ -14,6 +14,7 @@ class User(db.Model):
 
     # profiles = db.relationship("Profile", back_populates="user")
     completedimzs = db.relationship("CompletedIMZ", back_populates="user")
+    eligibility = db.relationship("Eligibility", back_populates="user")
 
     def __repr__(self):
         return f'<"user"={self.user_id} "email"={self.email}>'
@@ -55,9 +56,11 @@ class CompletedIMZ(db.Model):
 
 class Eligibility(db.Model):
 
-    __tablename__ = "eligiblity"
+    __tablename__ = "eligibility"
 
-    quiz_id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+    # TODO change to one to one
+    quiz_id = db.Column(db.Integer, primary_key = True, autoincrement = True) 
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable = False)
     genderM = db.Column(db.String)
     genderF = db.Column(db.String)
     genderN = db.Column(db.String)
@@ -72,14 +75,16 @@ class Eligibility(db.Model):
     fluidsY = db.Column(db.String)
     fluidsN = db.Column(db.String)
     injectablesY = db.Column(db.String)
-    injectablesN = db.Column(db.String)    
+    injectablesN = db.Column(db.String)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable = False)
+
+    user = db.relationship("User", back_populates="eligibility")
 
 
 class InfantVaccine(db.Model):
     __tablename__ = "infant_vaccines"
 
-    infant_vaccine_id = db.Column(db.Integer, primary_key = True, autoincrement = True)
-    infant_vaccine_name = db.Column(db.String)
+    infant_vaccine_name = db.Column(db.String, primary_key = True)
     # profile_id = db.Column(db.Integer, db.ForeignKey("profiles.profile_id"))
     # Vaccine = db.Column(db.String, unique=True)
     birth = db.Column(db.String)

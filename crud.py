@@ -4,6 +4,7 @@ from model import db, User, InfantVaccine, AdolescentVaccine, AdultVaccine, Comp
 import psycopg2
 from bs4 import BeautifulSoup
 import requests
+from datetime import date, datetime
 
 def create_user(email, password, name):
     """Create and return new user"""
@@ -32,6 +33,9 @@ def get_all_users():
 
     return all_users
 
+def get_eligibility_by_user(user_id): 
+    
+    return Eligibility.query.filter_by(user_id).one()
 
 def create_infant_vaccine(Vaccine, Birth, month_one, month_two, month_four, month_six, month_nine, month_twelve, month_fifteen):
     """Creates and returns new vaccine"""
@@ -46,16 +50,6 @@ def create_infant_vaccine(Vaccine, Birth, month_one, month_two, month_four, mont
                        month_twelve=month_twelve,
                        month_fifteen=month_fifteen)
     return infant_vaccine
-
-# def get_infant_vaccine(infant_vaccine):
-#     inf_vaccine = InfantVaccine.query.all()
-
-#     inf_list = []
-
-#     for item in infant_vaccine:
-#         inf_list.append(item)
-
-#     return inf_list
 
 def create_adolescent_vaccine(Vaccine, month_eighteen, month_nineteen, two_to_four, four_to_six, seven_to_ten, eleven_to_twelve, thirteen_to_fifteen, sixteen, seventeen_to_eighteen):
     """Creates and returns new vaccine"""
@@ -82,18 +76,6 @@ def create_vaccine(Vaccine, nineteen_to_twentysix, twentyseven_to_fortynine, fif
                        sixtyfive=sixtyfive)
     return adult_vaccine
 
-# def create_profile(user, name, age, gender):
-#     """Creates and returns new profile"""
-
-#     profile = Profile(user=user, name=name,  age=age, gender=gender)
-
-#     return profile
-
-# def get_profile_by_id(profile_id):
-#     """Return a user by primary key."""
-
-#     return Profile.query.get(profile_id)
-
 def create_completed_imz(imz, admin_date, reaction, user_id):
     """Creates and returns new profile"""
 
@@ -103,25 +85,6 @@ def create_completed_imz(imz, admin_date, reaction, user_id):
 
     return completed_imz
 
-def get_user_vaccine():
-
-    vaccine = db.session.query(CompletedIMZ.imz)
-
-    return vaccine
-
-def get_user_vaccine_date():
-
-    date = db.session.query(CompletedIMZ.admin_date)
-    
-    return date
-
-def get_user_vaccine_reaction():
-
-    reaction = db.session.query(CompletedIMZ.reaction)
-    
-    return reaction
-
-
 def create_eligibility(genderM, genderF, genderN, age, pregnantY, pregnantN, 
                                         travelY, travelN, chickenpoxY, chickenpoxN, chickenpoxU, 
                                         fluidsY, fluidsN, injectablesY, injectablesN):
@@ -130,6 +93,46 @@ def create_eligibility(genderM, genderF, genderN, age, pregnantY, pregnantN,
     eligibility = Eligibility(genderM=genderM, genderF=genderF, genderN=genderN, age=age, pregnantN=pregnantN, pregnantY=pregnantY, travelN=travelN, travelY=travelY, chickenpoxN=chickenpoxN, chickenpoxY=chickenpoxY, chickenpoxU=chickenpoxU, fluidsN=fluidsN, fluidsY=fluidsY, injectablesN=injectablesN, injectablesY=injectablesY)
 
     return eligibility
+
+def calculate_age(age):
+    cur_year = int((date.today()).strftime('%Y'))
+
+    entered = datetime.strptime(age, '%Y-%m-%d')
+    year = entered.year
+    month = entered.month
+    day = entered.day
+
+    calc_age = ((((cur_year-year-1)*365.24 + (12 - month)*30.437 + day)/365))*12
+
+    return calc_age
+
+def get_recommended_vaccines(check_age):
+
+    if check_age < 2:
+        recommended = InfantVaccine.query.filter(InfantVaccine.birth != "")
+    elif check_age < 6:
+        recommended = InfantVaccine.query.filter(InfantVaccine.month_two != "")
+    elif check_age < 12:
+        recommended = InfantVaccine.query.filter(InfantVaccine.month_six != "")
+    elif check_age < 18:
+        recommended = InfantVaccine.query.filter(InfantVaccine.month_twelve != "")
+    elif check_age < 24:
+        recommended = AdolescentVaccine.query.filter(AdolescentVaccine.month_eighteen != "")
+    elif check_age < 84:
+        recommended = AdolescentVaccine.query.filter(AdolescentVaccine.four_to_six != "")
+    elif check_age < 132:
+        recommended = AdolescentVaccine.query.filter(AdolescentVaccine.seven_to_ten != "")
+    elif check_age < 228:
+        recommended = AdolescentVaccine.query.filter(AdolescentVaccine.eleven_to_twelve != "")
+    elif check_age < 600:
+        recommended = AdultVaccine.query.filter(AdultVaccine.twentyseven_to_fortynine != None)
+    elif check_age < 780:
+        recommended = AdultVaccine.query.filter(AdultVaccine.fifty_to_sixtyfour != "")
+    else:
+        recommended = AdultVaccine.query.filter(AdultVaccine.sixtyfive != "")
+
+    return recommended
+
 
 def get_pt_education(data):
     brandName = data['results'][0]['brand_name']
@@ -154,81 +157,6 @@ def get_warnings(data):
     warnings = target.find_next_sibling('p').text
 
     return warnings
-
-def calculateAge(birthDate):
-    days_in_month = 30.437   
-    age = int((date.today() - birthDate).days / days_in_month)
-    return age
-
-def get_db_connection():
-    conn = psycopg2.connect(
-    host = "localhost",
-    database ="vaxtrac",
-    user="postgres",
-    password= "1234")
-
-    return conn
-
-def inf_vacc_brith_to_one():
-    conn = get_db_connection()
-    cur = conn.cursor()
-    cur.execute('SELECT infant_vaccine_name FROM Infant_Vaccines where birth is not null')
-    vaccine_birth = cur.fetchall()
-    cur.close()
-    conn.close()
-
-    return vaccine_birth
-
-def inf_vacc_two_to_four():
-    vaccine = InfantVaccine.query.filter(InfantVaccine.month_two != None)
-    travel = db.session.query(Eligibility.travelY).order_by(Eligibility.quiz_id.desc()).first()
-    
-    return vaccine
-
-def inf_vacc_six_to_nine():
-    vaccine = InfantVaccine.query.filter(InfantVaccine.month_six != None)
-    
-    return vaccine
-
-def inf_vacc_tweleve_to_fifteen():
-    vaccine = InfantVaccine.query.filter(InfantVaccine.month_twelve != None)
-    
-    return vaccine
-
-def adol_vacc_mo_eighteen():
-    vaccine = AdolescentVaccine.query.filter(AdolescentVaccine.month_eighteen != None)
-    
-    return vaccine
-
-def adol_vacc_two():
-    vaccine = AdolescentVaccine.query.filter(AdolescentVaccine.four_to_six != None)
-    
-    return vaccine
-
-def adol_vacc_seven():
-    vaccine = AdolescentVaccine.query.filter(AdolescentVaccine.seven_to_ten != None)
-    
-    return vaccine
-
-def adol_vacc_eleven_to_eighteen():
-    vaccine = AdolescentVaccine.query.filter(AdolescentVaccine.eleven_to_twelve != None)
-    
-    return vaccine
-
-def adult_to_fortynine():
-    vaccine = AdultVaccine.query.filter(AdultVaccine.twentyseven_to_fortynine != None)
-    
-    return vaccine
-
-def adult_fifty_to_sixtyfive():
-    vaccine = AdultVaccine.query.filter(AdultVaccine.fifty_to_sixtyfour != None)
-    
-    return vaccine
-
-def adult_sixtyfive():
-    vaccine = AdultVaccine.query.filter(AdultVaccine.sixtyfive != None)
-    
-    return vaccine
 
 if __name__ == '__main__':
     from server import app

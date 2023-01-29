@@ -1,13 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Learn about Immunizations</title>
-  <link rel="stylesheet" href ="static/search-style.css">
-</head>
-<body>
+{% extends 'base.html' %}
+{% block title %}Vaxtrac{% endblock %}
+
+{% block head %} 
+
+
+{% endblock %}
+
+
+{% block body %}
+
   <form method="POST" action="/allvaccines/search">
     <div class="row">
       <label class="form-label above" for="brand_name">Search Vaccine Name</label></div>
@@ -19,10 +20,19 @@
     <ul class = "autocomplete_list" id ="brandName_list">
 
     </ul> -->
-    <input type="submit">Find Vaccine Info
+    <button onclick="performPost()">Find Vaccine Information</button>
   </div>
   </form>
 
   <script src ="static/js/autocomplete.js"></script>
-</body>
-</html>
+  <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
+  <script>
+    function performPost() {
+        $.ajax({
+          type: "POST",
+          url: "{{url_for('find_vaccines')}}",
+          data: ['results'][0]["generic_name"]
+        })
+    }
+  </script>
+{% endblock %}

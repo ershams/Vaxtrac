@@ -3,7 +3,6 @@ app=Flask(__name__,template_folder='template')
 import psycopg2
 import requests
 from pprint import pformat
-from bs4 import BeautifulSoup
 
 from flask import (Flask, render_template, request, flash, session,
                    redirect, jsonify)
@@ -87,20 +86,14 @@ def process_logout():
 @app.route("/dashboard")
 def show_dashboard():
     """Show user dashboard"""
-   
-    if 'user_email' in session:
-        
-        logged_in_email = session.get("user_email")
-        user = crud.get_user_by_email(logged_in_email)
-        
-        print(user)
-        print(user.completedimzs)
 
-    vaccine = crud.get_user_vaccine()
-    date = crud.get_user_vaccine_date()
-    reaction = crud.get_user_vaccine_reaction()
-        
-    return render_template("dashboard.html", vaccine=vaccine, date=date, reaction= reaction)
+    if "user_id" in session:
+
+        user_id = session["user_id"] 
+
+        vaccine = crud.get_user_by_id(user_id).completedimzs
+
+        return render_template("dashboard.html", vaccine=vaccine)
 
 @app.route("/create_completed_imz", methods=["POST"])
 def add_completed_imz():
@@ -109,10 +102,7 @@ def add_completed_imz():
     if 'user_id' not in session:
         return redirect("/")
 
-    # user = crud.get_user_by_id(user_id)
     user_id = session.get('user_id')
-
-    # user = User.query.get(user_id)
 
     imz = request.form.get('imzField')
     admin_date = request.form.get('adminDateField')
@@ -139,22 +129,16 @@ def add_completed_imz():
 
 @app.route("/quiz")
 def show_quiz():
-    """take use to sign-up form"""
+    """take user to eligibility quiz"""
 
     return render_template("quiz.html")
 
-# @app.route("/recommended", methods = "POST")
-# def show_recommended():
+@app.route("/retake_quiz", methods = ["POST"])
+def retake_quiz():
+    """take use to sign-up form"""
 
-#     gender = request.form.get('genderField')
-#     age = request.form.get('dobField')
-#     pregnant = request.form.get('pregnantField')
-#     travel = request.form.get('travelField')
-#     chickenpox = request.form.get('cpField')
-#     fluids = request.form.get('bloodField')
-#     injectables = request.form.get('injectField')
+    return redirect("/quiz")
 
-#     return render_template("recommended.html")
 
 @app.route("/eligible_imz", methods=["POST"])
 def find_eligible_imz():
@@ -176,16 +160,10 @@ def find_eligible_imz():
     injectablesY = request.form.get('injectYField')
     injectablesN = request.form.get('injectNField')
 
-    eligibility = crud.create_eligibility(genderM, genderF, genderN, age, pregnantY, pregnantN, 
-                                        travelY, travelN, chickenpoxY, chickenpoxN, chickenpoxU, 
-                                        fluidsY, fluidsN, injectablesY, injectablesN)
+    check_age = crud.calculate_age(age)
+    vaccine = crud.get_recommended_vaccines(check_age)
 
-    db.session.add(eligibility)
-    db.session.commit()
-
-    
-
-    return redirect("/recommended")
+    return render_template("recommended.html", age = age, pregnantY=pregnantY, travelY=travelY, vaccine=vaccine, check_age=check_age)
 
 @app.route("/add_vaccines")
 def show_vaccines():
@@ -221,19 +199,9 @@ def find_vaccines():
                            results=vaccines,
                            texts=texts,
                            warnings=warnings)
-
-@app.route("/recommended")
-def show_results():
-
-    # age = session.get('age')
-
-    age = db.session.query(Eligibility.age).order_by(Eligibility.quiz_id.desc()).first()
-    sex = db.session.query(Eligibility.genderM).order_by(Eligibility.quiz_id.desc()).first()
-    pregnantY = db.session.query(Eligibility.pregnantY).order_by(Eligibility.quiz_id.desc()).first()
-    travel = db.session.query(Eligibility.travelY).order_by(Eligibility.quiz_id.desc()).first()
-    injectables = db.session.query(Eligibility.injectablesY).order_by(Eligibility.quiz_id.desc()).first()
-
-    return render_template("recommended.html", age = age, sex=sex, pregnantY=pregnantY, travel=travel, injectables=injectables)
+@app.route("/test")
+def showtest():
+    return render_template("test.html")
 
 if __name__ == "__main__":
     connect_to_db(app)

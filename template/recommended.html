@@ -1,19 +1,12 @@
-{% for item in pregnantY%}
-{% if item is not none %}
-<p>You need Tdap vaccine during each pregnancy, preferably at the start of your third trimester.</p>
-{% endif %}
-{% endfor %}
+{{travelY}}
+{{pregnantY}}
 
-{% for item in travel%}
-{% if item is not none %}
-<p>	As you are planning to travel internationally, check <a href="https://www.cdc.gov/travel">CDC's travel website</a>  to find 
-    which travel vaccines you may need to help you stay healthy on your trip.</p>
-{% endif %}
+{% for item in vaccine %}
+    {% if check_age < 18 %}
+        {{item.infant_vaccine_name}}<br>
+    {% elif check_age < 229 %}
+        {{item.adolescent_vaccine_name}}<br>
+    {% else %}
+        {{item.adult_vaccine_name}}<br>
+    {% endif %}
 {% endfor %}
-
-{% for item in injectables%}
-{% if item is not none %}
-<p>HepB recs with reason</p>
-{% endif %}
-{% endfor %}
-

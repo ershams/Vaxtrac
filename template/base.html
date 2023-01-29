@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width">
     <title>
       {% block title %}Vaxtrac{% endblock %}
-      <style>
-        section{
-          padding: 60 px 0;
-        }
-      </style>
+      
 
     </title>
     
@@ -19,14 +15,15 @@
 
       
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-      <nav class="navbar">
+      <link rel="stylesheet" href="/static/custom.css">
+      <nav class="navbar navbar-expand-md navbar-light bg-dark-subtle">
         <div class="container-xxl">
           <span class="fw-bold text-secondary">
             Vaxtrac
         </span>
           <a href="/dashboard" class="navbar-brand">
             <span class="fw-bold text-secondary">
-              Track Your Immnizations
+              Track Your Immunizations
           </span>
           <a href="/quiz" class="navbar-brand">
             <span class="fw-bold text-secondary">
@@ -37,11 +34,22 @@
                 Learn About Immunizations
             </span>
             </a>
-            <span class="lead text-end">
+            <span class="">
               Logout
             </span>
           </div>
       </nav>
+
+      <div class="modal fade" id="education" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modal-title">This vaccine or whatever</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+          </div>
+        </div>
+      </div> 
       <section id ="intro">
         <div class="container">
           <div class="row">
@@ -52,9 +60,34 @@
         </div>
       </section>
 
+      <!-- Footer -->
+      
+
       
     {% block head %}{% endblock %}
   </head>
+    
+<div class="footer">
+  
+
+    
+ 
+  <footer class="container">
+    <div class="d-flex flex-wrap justify-content-between align-items-center py-2 my-1 border-top">
+      <p class="col" id="footer-logo"><span class="material-symbols-outlined">
+        </span>Vaxtrac</p>
+      <ul class="nav col justify-content-end">
+        <li class="nav-item"><a href="/" class="nav-link px-2 text-muted">Home</a></li>
+        <li class="nav-item"><a href="https://github.com/ershams" class="nav-link px-2 text-muted"
+            target="_blank" rel="noopener noreferrer"><i class="bi bi-github"></i></a></li>
+        <li class="nav-item"><a href="https://www.linkedin.com/in/eusra-shams/" class="nav-link px-2 text-muted"
+            target="_blank" rel="noopener noreferrer"><i class="bi bi-linkedin"></i></a></li>
+        
+         </div>
+      </ul>
+    </div>
+  </footer>
+</div>
   <body>
     {% block body %}{% endblock %}
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
