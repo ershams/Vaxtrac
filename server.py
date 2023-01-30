@@ -66,7 +66,7 @@ def process_login():
     # # name = request.form.get("name")
 
     user = crud.get_user_by_email(email)
-    print(user)
+    print(user.name)
     if not user or user.password != password:
             flash("The email or password you entered was incorrect.")
     else:
@@ -91,9 +91,11 @@ def show_dashboard():
 
         user_id = session["user_id"] 
 
+        name = crud.get_user_by_id(user_id).name
+
         vaccine = crud.get_user_by_id(user_id).completedimzs
 
-        return render_template("dashboard.html", vaccine=vaccine)
+        return render_template("dashboard.html", vaccine=vaccine, name=name)
 
 @app.route("/create_completed_imz", methods=["POST"])
 def add_completed_imz():
@@ -108,10 +110,11 @@ def add_completed_imz():
     admin_date = request.form.get('adminDateField')
     reaction = request.form.get('reactionField')
 
-    completed_imz = crud.create_completed_imz(imz, admin_date, reaction, user_id)
+    if imz: 
+        completed_imz = crud.create_completed_imz(imz, admin_date, reaction, user_id)
 
-    db.session.add(completed_imz)
-    db.session.commit()
+        db.session.add(completed_imz)
+        db.session.commit()
 
     return redirect("/dashboard")
 
@@ -212,9 +215,9 @@ def find_vaccines():
             "brand_name": brand_name}
 
 
-@app.route("/test")
+@app.route("/flu_tracker")
 def showtest():
-    return render_template("test.html")
+    return render_template("flu_tracker.html")
 
 if __name__ == "__main__":
     connect_to_db(app)

@@ -10,90 +10,109 @@
 {% block body %}
 
 
-<div class="row ml-2 my-2">
-  <div class="container col-6 fw-bold my-3 float-start">
-    <div class="shadow-lg p-3 mb-0 rounded border-1 text-white bg-primary bg-opacity-50">
-    <h2>Track Immunizations</h2>
-  <div class="text-light fw-light">
-    <p>Create a digital copy of your immunization records by adding your completed immunizations here.</p>
-  </div>
-</div>
-  
-</div>
 
-</div>
-
-
-
-
-<div class="container col-6 fw-bold">
-  <div class="shadow p-3 mt-2 mb-2 rounded bg-secondary bg-opacity-50">
-<form action="/create_completed_imz" method = "POST">
-  <div class="row ml-2 my-2">
-    <div class="col-4">
-      <div class="px-3">
-      Immunization 
-    </div>
-    </div>
-    <div class="col-4">
-      Date of Administration 
-    </div>
-    <div class="col-2">
-      Reactions 
-    </div>
-  </div> 
-  <div class="row ml-2 my-2">
-    <div class="col-4">
-      <div class="px-3">
-      <input type="text" id="imzField" name="imzField" />
-    </div>
-    </div>
+<body>
+{{'Welcome '}}{{name}}
+<div class="card mt-5 mx-5" >
+  <header>
+    <h3 text-align: center>
+      Track Your Immunizations
+    </h3>
+  </header>
+    <form action="/create_completed_imz" method = "POST">
+      <div class="row ml-2 my-2">
+        <div class="col-4">
+         <div class="px-3">
+          Immunization 
+        </div>
+      </div>
+      <div class="col-4">
+        Date of Administration 
+      </div>
+      <div class="col-2">
+        Reactions 
+      </div>
+    </div> 
+    <div class="row ml-2 my-2">
+      <div class="col-4">
+        <div class="px-3">
+          <input type="text" id="imzField" name="imzField" />
+        </div>
+      </div>
     <div class="col-4">
       <input type="date" id="adminDateField" name="adminDateField" /> 
     </div>
     <div class="col-2">
-      <input type="text" id="reactionField" name="reactionField" /> 
+        <input type="text" id="reactionField" name="reactionField" /> 
+    </div>
     </div>
     <br><br>
     <div class="col-10">
       <button id="addProfile" type = "submit">Add Completed Immunization</button>
     </div>
-  </div>
-  </div> 
-    </sp> 
-   
+    <table class="table table-striped">
   
-        
-</form></div>
-
-<div class="row ml-2 my-2">
-  <div class="container col-6 fw-bold my-3 float-start">
-    <div class="shadow-lg p-3 mb-0 rounded border-1 bg-secondary bg-opacity-50">
-<table class="table table-striped">
-  
-  <tr>
-    <th>Immunization</th>
-      <th>Adminstraton Date</th>
-        <th>Reaction</th>
-      </tr>
       <tr>
-        <td>
-        {% for item in vaccine %}
-        {{item.imz}}<br></td>
-        <td>
-          {{item.admin_date.strftime("%m/%d/%Y")}}<br></td>
-          <td>
-            {{item.reaction}}<br></td>
-          
-      </tr>
-          </table></div>
-        {% endfor %}
-</div>
-  
-</div>
+        <th>Immunization</th>
+          <th>Adminstraton Date</th>
+            <th>Reaction</th>
+          </tr>
+          <tr>
+            <td>
+            {% for item in vaccine %}
+            {{item.imz}}<br></td>
+            <td>
+              {{item.admin_date.strftime("%m/%d/%Y")}}<br></td>
+              <td>
+                {{item.reaction}}<br></td>
+              
+          </tr>
+              </table>{% endfor %}</div>
 
-</div>
+              <div class="card float-end mb-5 mx-5">
+                <form onsubmit="handleForm(event)" action="/eligible_imz" method = "POST">
+                  
+                  When were you born?<br>
+                  <div class="col-2">
+                  <input type="date" id="dobField" name="dobField" /> <br><br></div>
+                
+                  Are you pregnant or do you plan on becoming pregnant soon?<br>
+                  <div class="col-2">
+                  <input type="radio" id="pregnantYField" name="pregnantYField" /> Yes</input><br>
+                  <input type="radio" id="pregnantNField" name="pregnantNField" /> No </input><br><br></div>
+                
+                  Are you planning to travel out of the U.S. in the near future?<br>
+                  <div class="col-2">
+                  <input type="radio" id="travelYField" name="travelYField" /> Yes</input><br>
+                  <input type="radio" id="travelNField" name="travelNField" /> No </input><br><br></div>
+                
+                  Have you ever had the chickenpox vaccine, been diagnosed with chickenpox, or have laboratory results showing you had chickenpox?<br>
+                  <div class="col-2">
+                  <input type="radio" id="cpYField" name="cpYField" /> Yes</input><br>
+                  <input type="radio" id="cpNField" name="cpNField" /> No </input><br>
+                  <input type="radio" id="cpUField" name="cpUField" /> Unsure </input><br><br></div>
+                
+                  Do you work in healthcare or public safety, and come in contact with blood or body fluids?<br>
+                  <div class="col-2">
+                  <input type="radio" id="bloodYField" name="bloodYField" /> Yes</input><br>
+                  <input type="radio" id="bloodNField" name="bloodNField" /> No </input><br><br></div>
+                
+                  Do you use insulins or other injectable medications?<br>
+                  <div class="col-2">
+                  <input type="radio" id="injectYField" name="injectYField" /> Yes</input><br>
+                  <input type="radio" id="injectNField" name="injectNField" /> No </input><br><br></div>
+                
+                
+                  <button id="submitQuiz" type = "submit">Submit Quiz</button><sp><sp></form>
+              </div>
+            </body>
 
-
+            <div class="card">
+              <img src="img_avatar.png" alt="Avatar" style="width:100%">
+              <div class="container">
+                <h4><b>John Doe</b></h4> 
+                <p>Architect & Engineer</p> 
+              </div>
+            </div>
 
     {% endblock %}

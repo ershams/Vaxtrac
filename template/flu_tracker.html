@@ -1,0 +1,46 @@
+<div>
+    <canvas id="myChart"></canvas>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.2/d3.min.js" integrity="sha512-oKI0pS1ut+mxQZdqnD3w9fqArLyILRsT3Dx0B+8RVEXzEk3aNK3J3pWlaGJ8MtTs1oiwyXDAH6hG6jy1sY0YqA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <script>
+
+    const fluData = 'static/FluView_StackedColumnChart_Data.csv'
+
+    d3.csv(fluData).then(function(datapoints) {
+        console.log(datapoints)
+        const WEEK = [];
+        const total = [];
+
+        for (i = 0; i < datapoints.length; i++) {
+            WEEK.push(datapoints[i].WEEK)
+            total.push(datapoints[i].total)
+        }
+        console.log(WEEK)
+        console.log(total)
+
+        const ctx = document.getElementById('myChart');
+  
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: WEEK,
+      datasets: [{
+        label: '# Confirmed Inluenza Cases',
+        data: total,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+    });
+  </script>
