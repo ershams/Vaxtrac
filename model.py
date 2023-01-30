@@ -20,6 +20,7 @@ class User(db.Model):
         return f'<"user"={self.user_id} "email"={self.email}>'
 
 # class Profile(db.Model):
+#      TODO implement profiles for user 
 #     __tablename__ = "profiles"
 
 #     profile_id = db.Column(db.Integer, primary_key = True, autoincrement = True)

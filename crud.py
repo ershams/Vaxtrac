@@ -134,29 +134,75 @@ def get_recommended_vaccines(check_age):
     return recommended
 
 
-def get_pt_education(data):
-    brandName = data['results'][0]['brand_name']
-    link = f'https://www.drugs.com/{brandName}.html'
+def get_pt_education(brandName):
+   # brandName = data['results'][0]['brand_name']
+    link = f'http://www.drugs.com/{brandName}.html'
+    # print(link)
+
+    # TODO check if in db else scrap site and add to db
 
     page1 = requests.get(link)
     education = BeautifulSoup(page1.content, 'html.parser')
+    # print(education)
 
-    target = education.find('h2')
-    texts = target.find_next_sibling('p').text
+    success = education.find('h1').text 
+    success = success != "Page Not Found" and success != "Forbidden"
 
-    return texts
+    if education and success:
+        uses = education.find('h2', {"id" : "uses"})
+    
+        if uses: 
+            uses = uses.find_next_sibling('p').text
 
-def get_warnings(data):
-    brandName = data['results'][0]['brand_name']
-    link = f'https://www.drugs.com/{brandName}.html'
+        warning = education.find('h2', id = "warnings")
+        
+        if warning:
+            warning = warning.find_next_sibling('p').text
 
-    page1 = requests.get(link)
-    education = BeautifulSoup(page1.content, 'html.parser')
+        # TODO add to database
 
-    target = education.find('h2', text = "Warnings")
-    warnings = target.find_next_sibling('p').text
+        return {"uses" : uses, "warning" : warning}
 
-    return warnings
+# def get_pt_education(brandName):
+#     # brandName = data['results'][0]['brand_name']
+#     link = f'https://www.goodrx.com/{brandName}/what-is'
+#     # print(link)
+
+#     # TODO check if in db else scrap site and add to db
+
+#     page1 = requests.get(link)
+#     education = BeautifulSoup(page1.content, 'html.parser')
+#     # print(education)
+
+#     success = education.find('h2').text 
+#     success = success != "Page Not Found" and success != "Forbidden"
+
+#     if education and success:
+#         uses = education.find(class_="class_name")
+    
+#         if uses: 
+#             uses = uses.find_next_sibling('p').text
+
+#         warning = education.find('h2', id = "warnings")
+        
+#         if warning:
+#             warning = warning.find_next_sibling('p').text
+
+#         # TODO add to database
+
+#         return {"uses" : uses, "warning" : warning}
+
+# def get_warnings(data):
+#     brandName = data['results'][0]['brand_name']
+#     link = f'https://www.drugs.com/{brandName}.html'
+
+#     page1 = requests.get(link)
+#     education = BeautifulSoup(page1.content, 'html.parser')
+#     if education:
+#         target = education.find('h2', text = "Warnings")
+#         warnings = target.find_next_sibling('p').text
+
+#         return warnings
 
 if __name__ == '__main__':
     from server import app

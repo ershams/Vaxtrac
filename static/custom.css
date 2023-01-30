@@ -1,10 +1,18 @@
 body{
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat' sans-serif;
     font-size: large;
     height: 100%;
+    background-image: url('/static/img/two-syringes-with-brown-liquid-gray-surface.jpg');
     background-repeat: no-repeat;
     background-size: cover;
+    background-attachment: fixed;
   }
+
+  p {
+    font-family: 'Montserrat' sans-serif;
+    font-size: 24px;
+    font-weight: 200;
+   }
   
   .header {
     /*background-image: url('/static/img/headerbanner.png');
@@ -19,8 +27,9 @@ body{
   position: fixed;
   left: 0;
   bottom: 0;
+  height: 60px;
   width: 100%;
-  background-color: rgb(236, 229, 229);
+  background: linear-gradient(#c7cdce, #659bd1);
   color: rgb(8, 8, 8);
   text-align: left;
 }

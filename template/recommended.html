@@ -1,6 +1,8 @@
+{% extends 'base.html' %}
+{% block title %}Vaxtrac{% endblock %}
 {{travelY}}
 {{pregnantY}}
-
+{% block body %}
 {% for item in vaccine %}
     {% if check_age < 18 %}
         {{item.infant_vaccine_name}}<br>
@@ -10,3 +12,7 @@
         {{item.adult_vaccine_name}}<br>
     {% endif %}
 {% endfor %}
+
+<form action="/retake_quiz" method="POST"><button id="retakeQuiz" type = "submit">Retake Quiz</button></form>
+
+{% endblock %}

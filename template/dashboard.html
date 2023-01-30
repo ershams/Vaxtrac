@@ -9,15 +9,33 @@
 
 {% block body %}
 
-<div class="container m-5"><h2>Track Immunizations</h2></div>
+
+<div class="row ml-2 my-2">
+  <div class="container col-6 fw-bold my-3 float-start">
+    <div class="shadow-lg p-3 mb-0 rounded border-1 text-white bg-primary bg-opacity-50">
+    <h2>Track Immunizations</h2>
+  <div class="text-light fw-light">
+    <p>Create a digital copy of your immunization records by adding your completed immunizations here.</p>
+  </div>
+</div>
+  
+</div>
+
+</div>
+
+
+
+
+<div class="container col-6 fw-bold">
+  <div class="shadow p-3 mt-2 mb-2 rounded bg-secondary bg-opacity-50">
 <form action="/create_completed_imz" method = "POST">
   <div class="row ml-2 my-2">
-    <div class="col-2">
+    <div class="col-4">
       <div class="px-3">
       Immunization 
     </div>
     </div>
-    <div class="col-2">
+    <div class="col-4">
       Date of Administration 
     </div>
     <div class="col-2">
@@ -25,53 +43,57 @@
     </div>
   </div> 
   <div class="row ml-2 my-2">
-    <div class="col-2">
+    <div class="col-4">
       <div class="px-3">
       <input type="text" id="imzField" name="imzField" />
     </div>
     </div>
-    <div class="col-2">
+    <div class="col-4">
       <input type="date" id="adminDateField" name="adminDateField" /> 
     </div>
     <div class="col-2">
       <input type="text" id="reactionField" name="reactionField" /> 
     </div>
+    <br><br>
+    <div class="col-10">
+      <button id="addProfile" type = "submit">Add Completed Immunization</button>
+    </div>
+  </div>
   </div> 
     </sp> 
    
-  <br><button id="addProfile" type = "submit">Add Completed Immunization</button>
+  
         
-</form>
+</form></div>
 
-<div class="px-5 col-5">
+<div class="row ml-2 my-2">
+  <div class="container col-6 fw-bold my-3 float-start">
+    <div class="shadow-lg p-3 mb-0 rounded border-1 bg-secondary bg-opacity-50">
 <table class="table table-striped">
   
   <tr>
     <th>Immunization</th>
-    <th>Adminstraton Date</th>
-    <th>Reaction</th>
+      <th>Adminstraton Date</th>
+        <th>Reaction</th>
       </tr>
+      <tr>
+        <td>
         {% for item in vaccine %}
+        {{item.imz}}<br></td>
         <td>
-          {{item.imz}}<br>
-        </td>
-        <td>
-          {{item.admin_date.strftime("%m/%d/%Y")}}<br>
-        </td>
-        <td>
-            {{item.reaction}}<br>
-          </td>
+          {{item.admin_date.strftime("%m/%d/%Y")}}<br></td>
+          <td>
+            {{item.reaction}}<br></td>
+          
+      </tr>
+          </table></div>
         {% endfor %}
-
-        
-</table>
+</div>
+  
 </div>
 
-<div>
-  <form action="/post-form-data" method="POST" enctype="multipart/form-data">
-    <input type="file" name="my-file">
-    <input type="submit">
-  </form>
 </div>
-      
+
+
+
     {% endblock %}

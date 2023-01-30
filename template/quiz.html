@@ -10,19 +10,24 @@
 {% block body %}
 
 
-<div>
-    <h2>Vaccine Eligibility</h2>
-  
-</form>
+<div class="row ml-2 my-2">
+    <div class="container col-6 fw-bold my-3 float-start">
+      <div class="shadow-lg p-3 mb-0 rounded border-0 text-warning bg-primary bg-opacity-75">
+          <h2>Vaccine Eligibility</h2>
+        <div class="text-warning fw-light">
+          <p>Find which vaccines you should receive based on your age and health risk factors.</p>
+        </div>
+      </div> 
+    </div>
+  </div>
+
+    <div class="row ml-2 my-2">
+        <div class="container col-6 my-3 float-start">
+          <div class="shadow-lg p-3 mb-0 rounded border-1 bg-secondary bg-opacity-50">
 
 
 <form onsubmit="handleForm(event)" action="/eligible_imz" method = "POST">
-  Are you <br>
-    
-  <input type="radio" id="maleField" name="maleField" /> <label for="male">Male</label> <br>
-  <input type="radio" id="femaleField" name="femaleField" /> <label for="female" >Female</label><br>
-  <input type="radio" id="nbField" name="nbField" /> <label for="female" >Nonbinary</label><br><br>
-
+  
   When were you born?<br>
   <input type="date" id="dobField" name="dobField" /> <br><br>
 
@@ -53,19 +58,35 @@
   <input type="radio" id="injectNField" name="injectNField" /> No </input><br><br>
 
 
-  <br><button id="submitQuiz" type = "submit">Submit Quiz</button><sp><sp></form>
-    
-    <form action="/retake_quiz" method="POST"><button id="retakeQuiz" type = "submit">Retake Quiz</button></form>
-    
-  </sp>
+  <button id="submitQuiz" type = "submit">Submit Quiz</button><sp><sp></form>
+  </div>
+  
+</div>
 
-    
-  <!-- <script>
-    function handleForm(event){
-      event.preventDefault()
-      
-    }
-  </script> -->
+</div>
+
+    </div>
+    <section>
+        <div class="modal fade" id="recommended" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modal-title">This vaccine or whatever</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                {{'yet'}}
+            </div>
+          </div>
+        </div>
+      </div> 
+      <section id ="intro">
+        <div class="container">
+          <div class="row">
+            <div class="col-5 text-center text-md-start">
+              <!-- <div class="bg-primary m-0 p-3">Vaxtrac</div> -->
+            </div>
+          </div>
+        </div>
+      </section>
 
 
 

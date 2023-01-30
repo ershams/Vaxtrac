@@ -144,9 +144,6 @@ def retake_quiz():
 def find_eligible_imz():
     """log a new imz."""
 
-    genderM = request.form.get('maleField')
-    genderF = request.form.get('femaleField')
-    genderN = request.form.get('nbField')
     age = request.form.get('dobField')
     pregnantY = request.form.get('pregnantYField')
     pregnantN = request.form.get('pregnantNField')
@@ -163,7 +160,7 @@ def find_eligible_imz():
     check_age = crud.calculate_age(age)
     vaccine = crud.get_recommended_vaccines(check_age)
 
-    return render_template("recommended.html", age = age, pregnantY=pregnantY, travelY=travelY, vaccine=vaccine, check_age=check_age)
+    return  render_template("recommended.html", pregnantY=pregnantY, travelY=travelY, vaccine=vaccine, check_age=check_age)
 
 @app.route("/add_vaccines")
 def show_vaccines():
@@ -174,35 +171,51 @@ def show_vaccines():
 def find_vaccines():
     """Search for vaccines"""
 
-    brand_name = request.form.get('brand_name')
+    json = request.get_json()
+    brand_name = None
 
-    
+    if json:
+        brand_name = json["brand_name"]
+
+    # request.
     url = 'https://api.fda.gov/drug/ndc.json'
     #pass in all search endpoints 
     payload = {'search': brand_name}
 
 
-    response = requests.get(url, params=payload)
-    data = response.json()
-
-    texts = crud.get_pt_education(data)
-    warnings = crud.get_warnings(data)
+    response = requests.get(url, params=payload).json()
+    # print(data)
+    query = response['results'][0]['brand_name']
+    data = crud.get_pt_education(query)
+    # print(query)
+    # warnings = crud.get_warnings(data)
     
-    if '_embedded' in data:
-        vaccines = data['_embedded']['vaccines']
-    else:
-        vaccines = []
+    # if '_embedded' in data:
+    #     vaccines = data['_embedded']['vaccines']
+    # else:
+    #     vaccines = []
 
-    return render_template('search-results.html',
-                           pformat=pformat,
-                           data=data,
-                           results=vaccines,
-                           texts=texts,
-                           warnings=warnings)
+    # return render_template('search-results.html',
+    #                        pformat=pformat,
+    #                        data=data,
+    #                        results=vaccines,
+    #                        texts=texts,
+    #                        warnings=warnings)
+    
+    if data :
+        return {
+            "status": "Found",
+            "uses": data['uses'],
+            "warnings": data['warning']}
+
+    return {"status": "Not Found",
+            "brand_name": brand_name}
+
+
 @app.route("/test")
 def showtest():
     return render_template("test.html")
 
 if __name__ == "__main__":
     connect_to_db(app)
-    app.run(host="0.0.0.0", debug=True)
+    app.run(host="0.0.0.0", debug=True, port=3800)
