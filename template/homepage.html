@@ -1,41 +1,29 @@
-<!--{% extends 'base.html' %}
-{% block title %}Movie Ratings Home{% endblock %}
+{% extends 'base.html' %}
 
-{% block body %}-->
-<h1>Welcome!</h1>
 
-<h2>Create an Account</h2>
-<form action="/sign-up" >
-    <button type="submit">Sign Up</button>
-  </form>
-<!-- <form action="/registration" method="POST">
-  <p>
-    Email <input type="email" name="email">
-  </p>
 
-  <p>
-    Password <input type="password" name="password">
-  </p> -->
-  <!-- <p>
-      Username <input type="text" name="username">
-    </p> -->
-  <!-- <p>
-    <input type="submit">
-  </p>
-</form> -->
-
-<h2>Log In</h2>
-<form action="/login" method="POST">
-  <p>
-    Email <input type="email" name="email">
-  </p>
-
-  <p>
-    Password <input type="password" name="password">
-  </p>
-
-  <p>
-    <input type="submit">
-  </p>
-</form>
+{% block body %}
+<br><br><br><br>
+<div class="col-12 text-muted" align="center">
+<h1>Vaxtrac</h1>
+<h3>Strengthen Your Defense</h3>
+</div>
+<div class="container col-7" align="center">
+  <div class="row ml-2 my-2">
+    <div class="col-12" align="center">
+  <div class="card mt-5 mx-5 has-bg-img bg-img-nature text-align" >
+    <br>
+  <h3>Log In</h3><br>
+      <form action="/login" method="POST">
+        <p> Email <input type="email" name="email"></p>
+         <p>Password <input type="password" name="password"></p><br>
+            <p><input type="submit" class="btn btn-secondary"></form>
+            <form action="/sign-up" >
+                <button type="submit" class="btn btn-secondary">Register for an Account</button><br><br>
+            </form>
+          </div>
+            </p>
+    </div>
+  </div>
+  </div>
 <!--{% endblock %}-->

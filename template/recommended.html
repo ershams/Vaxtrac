@@ -1,18 +1,43 @@
 {% extends 'base.html' %}
 {% block title %}Vaxtrac{% endblock %}
-{{travelY}}
-{{pregnantY}}
-{% block body %}
-{% for item in vaccine %}
-    {% if check_age < 18 %}
-        {{item.infant_vaccine_name}}<br>
-    {% elif check_age < 229 %}
-        {{item.adolescent_vaccine_name}}<br>
-    {% else %}
-        {{item.adult_vaccine_name}}<br>
-    {% endif %}
-{% endfor %}
 
-<form action="/retake_quiz" method="POST"><button id="retakeQuiz" type = "submit">Retake Quiz</button></form>
+{% block body %}
+
+<div class="row mx-2 my-3">
+    <div class="card-elig border-radius: 20% mt-5 mx-5 has-bg-img bg-img-nature" >
+        <br>
+        <h2>Eligible Vaccines</h2>
+        <div class="p1">Consult your healthcare provider prior to receiving any vaccinations.</div><br>
+        <b>Age based eligible vaccines:</b><br>
+            {% for item in vaccine %}
+            {% if check_age < 18 %}
+                {{item.infant_vaccine_name}}<br>
+            {% elif check_age < 229 %}
+                {{item.adolescent_vaccine_name}}<br>
+            {% else %}
+                {{item.adult_vaccine_name}}<br>
+            {% endif %}
+            {% endfor %}<br>
+
+            <b>Risk based eligible vaccines:</b><br>
+            {% if pregnantY is not none %}
+           <p>It is important to receive the <b>Tdap </b> vaccine during each pregnancy as doing so lowers the risk of whooping cough in babies younger than 2 months old by 78%. The vaccine should ideally be taken at the start of the third trimester.</p>
+            {% endif %}
+
+            {% if injectablesY is not none %}
+            <p>The <b>Hepatitis B </b> vaccine is recommended for anyone over the age of 19 who is at a greater risk of blood or mucus exposure. Increased risk factors include having regular contact with bodily fluids, and injectable drug use such as insulins.</p>
+            {% endif %}
+
+            {% if chickenpoxY is not none %}
+            <p>All people 13 years of age and older who have never had chickenpox or have not received chickenpox vaccine should get two doses of the <b>Varicella</b> vaccine to increase protection against the disease.</p>
+            {% endif %}
+
+            {% if travelY is not none %}
+            <p>	As you are planning to travel internationally, <b>check the <a href="https://www.cdc.gov/travel">CDC's travel website</a> </b> to find which travel vaccines you may need to help you stay healthy on your trip.</p>
+            {% endif %}
+
+        <form action="/retake_quiz" method="POST"><button class="btn btn-secondary" id="retakeQuiz" type = "submit">Retake Quiz</button><br></form>
+    </div>
+</div>
 
 {% endblock %}

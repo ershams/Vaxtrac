@@ -12,12 +12,16 @@
 
 
 <body>
-{{'Welcome '}}{{name}}
-<div class="card mt-5 mx-5" >
+  <div class="row mx-3 mt-3">
+    <h3>{{'Welcome, '}}{{name}}</h3>
+  </div>
+<div class="container">
+<div class="row ml-2 my-2">
+<div class="card mt-5 mx-5 has-bg-img bg-img-nature" >
   <header>
-    <h3 text-align: center>
+    <h2 text-align: center><br>
       Track Your Immunizations
-    </h3>
+    </h2>
   </header>
     <form action="/create_completed_imz" method = "POST">
       <div class="row ml-2 my-2">
@@ -26,30 +30,32 @@
           Immunization 
         </div>
       </div>
-      <div class="col-4">
+      <div class="col-5">
         Date of Administration 
       </div>
-      <div class="col-2">
+      <div class="col-3">
         Reactions 
       </div>
     </div> 
     <div class="row ml-2 my-2">
       <div class="col-4">
-        <div class="px-3">
-          <input type="text" id="imzField" name="imzField" />
+        <div class="px-2">
+          <input type="text" id="imzField" name="imzField" size="7"/>
         </div>
       </div>
-    <div class="col-4">
-      <input type="date" id="adminDateField" name="adminDateField" /> 
+    <div class="col-5">
+      <input type="date" id="adminDateField" name="adminDateField" size="5"/> 
     </div>
     <div class="col-2">
-        <input type="text" id="reactionField" name="reactionField" /> 
+        <input type="text" id="reactionField" name="reactionField" size="7"/> 
     </div>
     </div>
     <br><br>
     <div class="col-10">
-      <button id="addProfile" type = "submit">Add Completed Immunization</button>
+      <button class="btn btn-secondary" type = "submit">Add Completed Immunization</button>
+      <button type="button" class="btn btn-secondary" type = "submit"><a href="/quiz">Find Eligible Vaccines</a></button>
     </div>
+    <div class = content>
     <table class="table table-striped">
   
       <tr>
@@ -57,62 +63,183 @@
           <th>Adminstraton Date</th>
             <th>Reaction</th>
           </tr>
+          {% for item in vaccine %}
           <tr>
             <td>
-            {% for item in vaccine %}
-            {{item.imz}}<br></td>
-            <td>
-              {{item.admin_date.strftime("%m/%d/%Y")}}<br></td>
-              <td>
-                {{item.reaction}}<br></td>
-              
+            {{item.imz}}</td>
+            <td>{{item.admin_date.strftime("%m/%d/%Y")}}</td>
+            <td>{{item.reaction}}
+                </td>              
           </tr>
-              </table>{% endfor %}</div>
+          {% endfor %}
+              </table></div></div>
 
-              <div class="card float-end mb-5 mx-5">
-                <form onsubmit="handleForm(event)" action="/eligible_imz" method = "POST">
-                  
-                  When were you born?<br>
-                  <div class="col-2">
-                  <input type="date" id="dobField" name="dobField" /> <br><br></div>
-                
-                  Are you pregnant or do you plan on becoming pregnant soon?<br>
-                  <div class="col-2">
-                  <input type="radio" id="pregnantYField" name="pregnantYField" /> Yes</input><br>
-                  <input type="radio" id="pregnantNField" name="pregnantNField" /> No </input><br><br></div>
-                
-                  Are you planning to travel out of the U.S. in the near future?<br>
-                  <div class="col-2">
-                  <input type="radio" id="travelYField" name="travelYField" /> Yes</input><br>
-                  <input type="radio" id="travelNField" name="travelNField" /> No </input><br><br></div>
-                
-                  Have you ever had the chickenpox vaccine, been diagnosed with chickenpox, or have laboratory results showing you had chickenpox?<br>
-                  <div class="col-2">
-                  <input type="radio" id="cpYField" name="cpYField" /> Yes</input><br>
-                  <input type="radio" id="cpNField" name="cpNField" /> No </input><br>
-                  <input type="radio" id="cpUField" name="cpUField" /> Unsure </input><br><br></div>
-                
-                  Do you work in healthcare or public safety, and come in contact with blood or body fluids?<br>
-                  <div class="col-2">
-                  <input type="radio" id="bloodYField" name="bloodYField" /> Yes</input><br>
-                  <input type="radio" id="bloodNField" name="bloodNField" /> No </input><br><br></div>
-                
-                  Do you use insulins or other injectable medications?<br>
-                  <div class="col-2">
-                  <input type="radio" id="injectYField" name="injectYField" /> Yes</input><br>
-                  <input type="radio" id="injectNField" name="injectNField" /> No </input><br><br></div>
-                
-                
-                  <button id="submitQuiz" type = "submit">Submit Quiz</button><sp><sp></form>
-              </div>
-            </body>
+              
 
-            <div class="card">
-              <img src="img_avatar.png" alt="Avatar" style="width:100%">
-              <div class="container">
-                <h4><b>John Doe</b></h4> 
-                <p>Architect & Engineer</p> 
-              </div>
+<div class="card mt-5 mx-5 has-bg-img bg-img-nature" >
+
+    <h2>Search Vaccine by Name</h2>   
+    <p>Learn about vaccines currently on the market.</p>
+ 
+  <form>
+    <div class = "container">
+      <select name="brand_name" id="brand_name" col-1>
+                    
+      </select><br><br>
+       <button type="button" class="btn btn-secondary" col-1 size="6" id="find_vaccine">Find Vaccine Information</button>
+    </div>
+      </form>
+      <div class = content>
+      <div><p style="font-size:10px" id = "vaccine_info"> </p></div></div>
+        <script src ="static/js/autocomplete.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
+        <script>
+          const vaccine_info = document.getElementById("vaccine_info");
+          const vaccine = document.getElementById("brand_name");
+      
+          document.getElementById("find_vaccine").addEventListener("click", (evt) => { 
+            evt.preventDefault();
+      
+            const payload = {
+              method: "POST",
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({"brand_name": vaccine.value})
+      
+              //['results'][0]["generic_name"] 
+            }
+            
+            fetch("{{url_for('find_vaccines')}}", payload
+            ).then((res) => {
+              return res.json();
+            }).then((json_data) => {
+              //const new_div = Document.createElement("div");
+              
+              console.log(json_data);
+              if (json_data["status"] == " "){
+                const obj = Object.entries(json_data);
+                console.log(typeof(obj))
+                for (const [key, value] of obj){
+                vaccine_info.insertAdjacentHTML(
+                "beforeend",
+                `<p>${value}</p>`
+                );
+              }
+            }
+      
+            })
+      
+      
+          });
+        </script>
+    </div>
             </div>
+
+            
+<div class="row ml-2 my-2">
+  <div class="card my-3 mx-5 has-bg-img bg-img-nature" ><br>
+    <header><h2>Positive Influenza Cases by Week</h2><br></header>
+    <div>
+      <canvas id="myChart"></canvas>
+        </div>
+          
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.2/d3.min.js" integrity="sha512-oKI0pS1ut+mxQZdqnD3w9fqArLyILRsT3Dx0B+8RVEXzEk3aNK3J3pWlaGJ8MtTs1oiwyXDAH6hG6jy1sY0YqA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            
+            <script>
+          
+              const fluData = 'static/FluView_StackedColumnChart_Data.csv'
+          
+              d3.csv(fluData).then(function(datapoints) {
+                  console.log(datapoints)
+                  const WEEK = [];
+                  const total = [];
+          
+                  for (i = 0; i < datapoints.length; i++) {
+                      WEEK.push(datapoints[i].WEEK)
+                      total.push(datapoints[i].total)
+                  }
+                  console.log(WEEK)
+                  console.log(total)
+          
+                  const ctx = document.getElementById('myChart');
+            
+            new Chart(ctx, {
+              type: 'bar',
+              data: {
+                labels: WEEK,
+                datasets: [{
+                  label: 'Confirmed Inluenza Cases by Week',
+                  data: total,
+                  borderWidth: 1
+                }]
+              },
+              options: {
+                scales: {
+                  y: {
+                    beginAtZero: true
+                  }
+                }
+              }
+            });
+              });
+            </script>
+            <div class = content>
+              <p>On average, over 200,000 people are hospitalized due to the seasonal influenze. Getting vaccinated against the virus is the most effective way to prevent adverse outcomes.</p>
+           </div>  
+  </div>
+
+  <div class="card my-3 mx-5 has-bg-img bg-img-nature" >
+    <div class="row ml-2 mt-1">
+      <h2>Search Vaccine Provider by zip code</h2>
+      <p>Find where to receive vaccines near you.</p>
+    </div>
+      <form>
+        <div class = "container">
+          <input type="text" id="loc_admin_zip" name="zipcode"><br><br>        
+              <button type="button" class="btn btn-secondary" id="find_location">Find Vaccine Provider</button>
+              <div class = content>
+                <div id = "provider_info"></div>
+              </div>
+        </div>
+      </form>        
+            <script>
+              const provider_info = document.getElementById("provider_info");
+              const zip = document.getElementById("loc_admin_zip");
+          
+              document.getElementById("find_location").addEventListener("click", (evt) => { 
+                evt.preventDefault();
+          
+                const payload = {
+                  method: "POST",
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({"loc_admin_zip": zip.value})
+                }
+                
+                fetch("{{url_for('find_provider')}}", payload
+                ).then((res) => {
+                  return res.json();
+                }).then((json_data) => {
+                  
+                  console.log(json_data);
+                  const obj = Object.entries(json_data);
+                  console.log(typeof(obj))
+                  for (const [key, value] of obj){
+                    provider_info.insertAdjacentHTML(
+                      "beforeend",
+                      `<p>${value}</p>`
+                    );
+                  }}
+                )
+          
+              });
+            </script>
+  </div>
+</div>
+</div>
 
     {% endblock %}

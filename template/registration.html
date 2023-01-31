@@ -1,26 +1,27 @@
 {% extends 'base.html' %}
-{% block title %}Vaxtrac Home{% endblock %}
+{% block title %}Vaxtrac{% endblock %}
 
 {% block body %}
-  <h1>Create an Account</h1>
+<br><br><br><br>
+<div class="col-12 text-muted" align="center">
+  <h1>Vaxtrac</h1>
+  <h3>Strengthen Your Defense</h3>
+</div>
 
-  <form onsubmit="handleForm(event)" action="/registration" method="POST" >
-    <p>
-      Email<span style="color: red">*</span>  <input type="text" name="email" placeholder="email@example.com" required pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$" required>
-    </p>
-
-    <p>
-      Name<span style="color: red">*</span>  <input type="name" name="name" placeholder="Your Name" required>
-    </p>
-
-    <p>
-        Password<span style="color: red">*</span>  <input type="password" name="password" placeholder="Password" required>
-      </p>
-
-    <p>
-      <input type="submit">
-    </p>
-  </form>
+<div class="container col-7" align="center">
+  <div class="row ml-2 my-2">
+    <div class="col-12" align="center">
+  <div class="card mt-5 mx-5 has-bg-img bg-img-nature text-align" >
+  <h2>Create an Account</h2><br>
+    <form onsubmit="handleForm(event)" action="/registration" method="POST" >
+      <p>Name<span style="color: red">*</span>  <input type="name" name="name" placeholder="Your Name" required></p>
+      <p> Email<span style="color: red">*</span>  <input type="text" name="email" placeholder="email@example.com" required pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$" required></p>
+      <p>Password<span style="color: red">*</span>  <input type="password" name="password" placeholder="Password" required></p><br>
+            <p><input type="submit" class="btn btn-secondary"></form>
+            
+          </div>
+    </div>
+  </div>
 
   <script>
     function handleForm(event){

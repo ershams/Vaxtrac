@@ -10,24 +10,15 @@
 {% block body %}
 
 
-<div class="row ml-2 my-2">
-    <div class="container col-6 fw-bold my-3 float-start">
-      <div class="shadow-lg p-3 mb-0 rounded border-0 text-warning bg-primary bg-opacity-75">
+<div class="row mx-2 my-3">
+      <div class="card-elig mt-5 mx-5 has-bg-img bg-img-nature">
+        <br>
           <h2>Vaccine Eligibility</h2>
-        <div class="text-warning fw-light">
           <p>Find which vaccines you should receive based on your age and health risk factors.</p>
-        </div>
-      </div> 
-    </div>
-  </div>
-
-    <div class="row ml-2 my-2">
-        <div class="container col-6 my-3 float-start">
-          <div class="shadow-lg p-3 mb-0 rounded border-1 bg-secondary bg-opacity-50">
 
 
 <form onsubmit="handleForm(event)" action="/eligible_imz" method = "POST">
-  
+ 
   When were you born?<br>
   <input type="date" id="dobField" name="dobField" /> <br><br>
 
@@ -55,10 +46,10 @@
   Do you use insulins or other injectable medications?<br>
 
   <input type="radio" id="injectYField" name="injectYField" /> Yes</input><br>
-  <input type="radio" id="injectNField" name="injectNField" /> No </input><br><br>
+  <input type="radio" id="injectNField" name="injectNField" /> No </input><br><br></p>
 
 
-  <button id="submitQuiz" type = "submit">Submit Quiz</button><sp><sp></form>
+  <button class="btn btn-secondary" id="submitQuiz" type = "submit">Submit Quiz</button><sp><sp></form><br><br>
   </div>
   
 </div>

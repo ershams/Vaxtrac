@@ -163,7 +163,11 @@ def find_eligible_imz():
     check_age = crud.calculate_age(age)
     vaccine = crud.get_recommended_vaccines(check_age)
 
-    return  render_template("recommended.html", pregnantY=pregnantY, travelY=travelY, vaccine=vaccine, check_age=check_age)
+    return  render_template("recommended.html", 
+                            pregnantY=pregnantY, travelY=travelY, 
+                            vaccine=vaccine, check_age=check_age,
+                            injectablesY=injectablesY, chickenpoxY=chickenpoxY,
+                            chickenpoxU=chickenpoxU)
 
 @app.route("/add_vaccines")
 def show_vaccines():
@@ -190,34 +194,47 @@ def find_vaccines():
     # print(data)
     query = response['results'][0]['brand_name']
     data = crud.get_pt_education(query)
-    # print(query)
-    # warnings = crud.get_warnings(data)
-    
-    # if '_embedded' in data:
-    #     vaccines = data['_embedded']['vaccines']
-    # else:
-    #     vaccines = []
-
-    # return render_template('search-results.html',
-    #                        pformat=pformat,
-    #                        data=data,
-    #                        results=vaccines,
-    #                        texts=texts,
-    #                        warnings=warnings)
     
     if data :
         return {
-            "status": "Found",
+            "status": " ",
             "uses": data['uses'],
             "warnings": data['warning']}
 
     return {"status": "Not Found",
             "brand_name": brand_name}
 
+@app.route('/findprovider', methods = ['POST'])
+def find_provider():
+    """Search for vaccines"""
 
-@app.route("/flu_tracker")
-def showtest():
-    return render_template("flu_tracker.html")
+    json = request.get_json()
+    loc_admin_zip = None
+    print(json)
+
+    if json:
+        loc_admin_zip = json["loc_admin_zip"]
+
+    # request.
+    url = 'https://data.cdc.gov/resource/bugr-bbfr.json'
+    #pass in all search endpoints 
+    payload = {'loc_admin_zip': loc_admin_zip}
+
+    # print(payload)
+
+    response = requests.get(url, params=payload).json()
+    name = response[0]['loc_name']
+    address = response[0]['loc_admin_street1']
+    city = response[0]['loc_admin_city']
+    phone = response[0]['loc_phone']
+    print(address)
+    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    
+
+    return {"name" : name,
+            "address" : address,
+            "city" : city,
+            "phone" : phone}
 
 if __name__ == "__main__":
     connect_to_db(app)

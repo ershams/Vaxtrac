@@ -44,3 +44,63 @@
   });
     });
   </script>
+
+<div class="row ml-2 my-2">
+  <div class="container col-6 fw-bold my-3 float-start">
+    <div class="shadow-lg p-3 mb-0 rounded border-0 text-warning bg-primary bg-opacity-75">
+        <h2>Search vaccine provider by zip code</h2>
+        <div class="text-warning fw-light">
+          <p>Find which vaccines you should receive based on your age and health risk factors.</p>
+        </div>
+      </div> 
+    </div>
+  </div>
+
+  <form>
+  <div class = "container" id = "provider_info">
+     <input type="text" id="zipcode" name="zipcode" class="autocomplete_input">Enter zipcode
+    
+    <button id="find_location">Find Vaccine Information</button>
+
+
+
+
+  </div>
+  </form>
+
+
+  <script>
+    const provider_info = document.getElementById("provider_info");
+    const zip = document.getElementById("zipcode");
+
+    document.getElementById("find_location").addEventListener("click", (evt) => { 
+      evt.preventDefault();
+
+      const payload = {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({"brand_name": zip.value})
+
+        //['results'][0]["generic_name"] 
+      }
+      
+      fetch("{{url_for('find_provider')}}", payload
+      ).then((res) => {
+        return res.json();
+      }).then((json_data) => {
+        //const new_div = Document.createElement("div");
+        
+        console.log(json_data);
+          for (const element of json_data){
+          vaccine_info.insertAdjacentHTML(
+            "beforeend",
+            `<p>${element}</p>`
+          );
+        }}
+      )
+
+    });
+  </script>
+

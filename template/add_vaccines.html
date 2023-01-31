@@ -58,12 +58,15 @@
         
         console.log(json_data);
         if (json_data["status"] == "Found"){
-          for (const element of json_data){
+          const obj = Object.entries(json_data);
+          console.log(typeof(obj))
+          for (const [key, value] of obj){
           vaccine_info.insertAdjacentHTML(
-            "beforeend",
-            `<p>${element}</p>`
+          "beforeend",
+          `<p>${value}</p>`
           );
-        }}
+        }
+      }
 
       })
 
