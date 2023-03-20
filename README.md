@@ -4,13 +4,10 @@ Vaxtrac is an application for managing the task of staying healthy with preventa
 
 ## Features
 - Add and track completed immunizations, dates of administration, and reactions
-
-![Track Immunizations.](https://github.com/samantha-wette/medbuddy/blob/main/static/img/gif1.gif?raw=true)
 <br><br>
 
 - Learn about currently available vaccines with information from openFDA and [Drugs.com]
 
-![Learn about vaccines.](https://github.com/samantha-wette/medbuddy/blob/main/static/img/gif1.gif?raw=true)
 <br><br>
 
 ## Demo
