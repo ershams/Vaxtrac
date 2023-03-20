@@ -4,13 +4,11 @@ Vaxtrac is an application for managing the task of staying healthy with preventa
 
 ## Features
 - Add and track completed immunizations, dates of administration, and reactions
-<br><br>
 
 - Learn about currently available vaccines with information from openFDA and [Drugs.com]
 
-<br><br>
-
 - Find eligible vacccines based on age and health risk factors
+<br><br>
 
 ## Demo
 Click [here](https://youtu.be/zHuDHg2AnZQ) to view the Vaxtrac demo video!
