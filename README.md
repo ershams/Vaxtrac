@@ -10,6 +10,8 @@ Vaxtrac is an application for managing the task of staying healthy with preventa
 
 <br><br>
 
+- Find eligible vacccines based on age and health risk factors
+
 ## Demo
 Click [here](https://youtu.be/zHuDHg2AnZQ) to view the Vaxtrac demo video!
 <br><br>
